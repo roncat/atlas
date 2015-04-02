@@ -1,5 +1,8 @@
 # atlas
-Atlas is a load balancer for marathon framework in mesos cluster, providing high availability for applications and managing rules of custom acl for each application fully dynamic way.
+
+[![Build Status](https://travis-ci.org/aexoti/atlas.svg)](https://travis-ci.org/aexoti/atlas)
+
+Atlas is a load balancer for marathon framework in mesos cluster, providing high availability for applications and managing rules of custom acl for each application fully dynamic way. 
 
 
 ## Funcionamento ##
