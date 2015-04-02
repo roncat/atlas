@@ -1,4 +1,4 @@
-package atlas;
+package br.com.aexo.atlas.templates;
 
 import java.io.ByteArrayOutputStream;
 
