@@ -6,6 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.apache.curator.framework.api.BackgroundCallback;
+import org.apache.curator.framework.api.CuratorEvent;
 import org.apache.curator.framework.api.CuratorWatcher;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.test.TestingServer;
@@ -34,7 +36,19 @@ public class Zookeeper {
 			@Override
 			public void process(WatchedEvent event) throws Exception {
 				
-				System.out.println("escrito no entrypoint "+new String(client.getData().forPath(event.getPath())));
+				client.getData().inBackground(new BackgroundCallback() {
+					
+					@Override
+					public void processResult(CuratorFramework client, CuratorEvent event)
+							throws Exception {
+						
+						System.out.println("escrito no entrypoint "+new String(client.getData().forPath(event.getPath())));
+						
+						
+					}
+				}).forPath(event.getPath());
+				
+				
 				client.getData().usingWatcher(this).forPath("/entrypoint");
 			}
 		};

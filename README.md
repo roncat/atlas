@@ -19,4 +19,11 @@ apps marathon  --- 3 nivel
 
 
 
+barramento zookeeper
+
+entrypoint fica responsável por ler a configuração
+
+/entrypoint 
+
+
 
