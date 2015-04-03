@@ -40,11 +40,6 @@
 	</build>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.kafka</groupId>
-			<artifactId>kafka_2.10</artifactId>
-			<version>0.8.2.1</version>
-		</dependency>
 
 		<dependency>
 			<groupId>org.apache.curator</groupId>
@@ -100,11 +95,4 @@
 
 
 	<packaging>pom</packaging>
-	<modules>
-		<module>entrypoint</module>
-		<module>endpoint</module>
-		<module>servicediscovery</module>
-		<module>commons</module>
-		<module>web</module>
-	</modules>
 </project>
