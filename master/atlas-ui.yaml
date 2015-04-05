@@ -1,0 +1,8 @@
+zookeeper: localhost
+path: atlas
+logging:
+  level: ERROR
+  loggers:
+    io.dropwizard: INFO
+  appenders:
+    - type: console

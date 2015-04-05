@@ -40,8 +40,22 @@
 	</build>
 
 	<dependencies>
-		
 
+		<!-- dependencia para criar api do serviço -->
+		<dependency>
+			<groupId>io.dropwizard</groupId>
+			<artifactId>dropwizard-core</artifactId>
+			<version>0.8.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+
+
+		<!-- dependencias para trabalhar com o zookeeper -->
 		<dependency>
 			<groupId>org.apache.curator</groupId>
 			<artifactId>curator-recipes</artifactId>
@@ -62,6 +76,8 @@
 			<artifactId>curator-framework</artifactId>
 			<version>2.7.1</version>
 		</dependency>
+
+		<!-- dependencia usada pelo sistema de template -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
@@ -94,10 +110,6 @@
 
 	<packaging>pom</packaging>
 	<modules>
-		<module>entrypoint</module>
-		<module>endpoint</module>
-		<module>servicediscovery</module>
-		<module>commons</module>
-		<module>web</module>
+		<module>master</module>
 	</modules>
 </project>
