@@ -37,6 +37,7 @@ public class AtlasMasterConfigurationTest {
 		CuratorFramework client = config.getCuratorFramework();
 		
 		assertThat(client.checkExists().forPath("/applications"), is(notNullValue()));
+		assertThat(client.checkExists().forPath("/groups"), is(notNullValue()));
 	}
 	
 }
