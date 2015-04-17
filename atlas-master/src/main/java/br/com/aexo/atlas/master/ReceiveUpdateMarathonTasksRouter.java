@@ -31,7 +31,7 @@ public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 		
 		from("restlet:http://"+hostname+":"+port+"/update-notify?restletMethods=get").process(new Processor() {
 			public void process(Exchange exchange) throws Exception {
-				getContext().createProducerTemplate().asyncRequestBody("vm:notify-slaves", null);
+				getContext().createProducerTemplate().request("vm:notify-slaves", null);
 			}
 		}).transform(constant("ok"));
 
@@ -39,7 +39,6 @@ public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 		
 		
 		from("vm:notify-slaves").process(new Processor(){
-
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				Collection<ServiceInstance<Object>> instances = discovery.queryForInstances("slave");
@@ -47,7 +46,17 @@ public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 			}
 		}).split().body().parallelProcessing().to("vm:notify-slave");
 
-		from("vm:notify-slave").to("http4://${body.address}:${body.port}/update-notify");
+		
+		from("vm:notify-slave").process(new Processor(){
+
+			@Override
+			public void process(Exchange exchange) throws Exception {
+				
+				ServiceInstance<Object> body = exchange.getIn().getBody(ServiceInstance.class);
+
+				getContext().createProducerTemplate().request("http4://"+body.getAddress()+":"+body.getPort()+"/update-notify", null);
+			
+			}});
 		
 		
 	}

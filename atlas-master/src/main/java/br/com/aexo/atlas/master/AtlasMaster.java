@@ -11,26 +11,49 @@ import org.apache.curator.x.discovery.ServiceInstance;
 
 public class AtlasMaster {
 
+	private CamelContext context;
+	private ReceiveUpdateMarathonTasksRouter receiveUpdateMarathonTasksRouter;
+	private ServiceInstance<Object> instance;
+	private ServiceDiscovery<Object> service;
+
+	public AtlasMaster(String zk, String hostname, Integer port) throws Exception {
+
+		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+		client.start();
+		
+		context = new DefaultCamelContext();
+		receiveUpdateMarathonTasksRouter = new ReceiveUpdateMarathonTasksRouter(client,hostname,port);
+		
+		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
+		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();
+
+	}
+
 	public static void main(String[] args) throws Exception {
 		String zk = args[0];
 		String hostname = args[1];
 		Integer port = Integer.parseInt(args[2]);
 
-		new AtlasMaster().start(zk, hostname, port);
+		new AtlasMaster(zk, hostname, port).start();
 	}
 
-	public void start(String zk, String hostname, int port) throws Exception {
-	
-		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
-		client.start();
-		
-		CamelContext context = new DefaultCamelContext();
-		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client,hostname,port));
+	public void start() throws Exception {
+		context.addRoutes(receiveUpdateMarathonTasksRouter);
 		context.start();
-
-		ServiceInstance<Object> instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
-		ServiceDiscovery<Object> service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();
 		service.start();
+	}
+
+	public void stop() throws Exception {
+		context.stop();
+	}
+
+	public ReceiveUpdateMarathonTasksRouter getReceiveUpdateMarathonTasksRouter() {
+		return receiveUpdateMarathonTasksRouter;
+	}
+
+	public void setReceiveUpdateMarathonTasksRouter(
+			ReceiveUpdateMarathonTasksRouter receiveUpdateMarathonTasksRouter) {
+		this.receiveUpdateMarathonTasksRouter = receiveUpdateMarathonTasksRouter;
 	}
 
 }
