@@ -25,7 +25,7 @@ public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 		discovery.start();
 
 		from("restlet:http://" + hostname + ":" + port + "/update-notify?restletMethods=get")
-		.to(ExchangePattern.InOnly, "vm:notify-slaves")
+		.to(ExchangePattern.InOnly, "seda:notify-slaves")
 		.transform(constant("ok"));
 
 	}

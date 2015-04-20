@@ -24,12 +24,13 @@ public class NotifySlavesRouter extends RouteBuilder {
 		ServiceDiscovery<Object> discovery = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").build();
 		discovery.start();
 
-		from("vm:notify-slaves").process(new Processor() {
+		from("seda:notify-slaves").process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				Collection<ServiceInstance<Object>> instances = discovery.queryForInstances("slave");
 				exchange.getOut().setBody(instances);
 			}
-		}).split().body().parallelProcessing().to("vm:notify-slave");
+		}).split()
+		.body().to("seda:notify-slave");
 	}
 }

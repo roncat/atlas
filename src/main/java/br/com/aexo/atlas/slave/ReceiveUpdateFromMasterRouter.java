@@ -16,7 +16,7 @@ public class ReceiveUpdateFromMasterRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 		from("restlet:http://" + hostname + ":" + port + "/update-notify?restletMethods=get")
-		.to(ExchangePattern.InOnly, "vm:updateAppsMarathon")
+		.to(ExchangePattern.InOnly,"seda:updateAppsMarathon")
 		.transform(constant("ok"));
 	}
 

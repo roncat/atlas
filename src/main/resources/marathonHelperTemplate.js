@@ -1,5 +1,5 @@
-marathonApps = JSON.parse(body.getMarathonApps());
-marathonTasks = JSON.parse(body.getMarathonTasks());
+marathonApps = JSON.parse(headers.marathonApps);
+marathonTasks = JSON.parse(headers.marathonTasks);
 
 apps = {};
 for (index in marathonApps.apps) {
@@ -42,7 +42,7 @@ function getServersFrom(app, port) {
 
 		if (task.appId == app) {
 			srv["host"] = task.host;
-			srv["port"] = task.ports[portIndex];
+			srv["port"] =""+task.ports[portIndex];
 			srv["alive"] = true;
 			for (i in task.healthCheckResults) {
 				if (!task.healthCheckResults[i].alive) {
@@ -85,6 +85,10 @@ function uniq(a) {
 	return out;
 }
 
+function escape(string){
+	return string.replace("/","");
+}
+
 // implementa uma interface java para ser usada no velocity
 
 load("nashorn:mozilla_compat.js");
@@ -92,7 +96,8 @@ var helper = Java.type('br.com.aexo.atlas.AtlasHelperTemplate');
 var helperImpl = Java.extend(helper, {
 	getPortsMapping : getPortsMapping,
 	getAcls : getAcls,
-	getServersFrom : getServersFrom
+	getServersFrom : getServersFrom,
+	escape : escape
 });
 
 // configura o helper como body para prosseguir processamento no template

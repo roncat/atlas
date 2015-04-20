@@ -1,7 +1,9 @@
 package br.com.aexo.atlas;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.Collection;
 
 import org.apache.curator.framework.CuratorFramework;
@@ -11,9 +13,9 @@ import org.apache.curator.test.TestingServer;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
+import org.hamcrest.text.pattern.internal.naming.Path;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import br.com.aexo.atlas.master.AtlasMaster;
 import br.com.aexo.atlas.slave.AtlasSlave;
@@ -23,8 +25,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
-
-import static org.mockito.Mockito.verify;
 
 public class IntegrationTest {
 
@@ -42,7 +42,7 @@ public class IntegrationTest {
 
 	@Test
 	public void deveriaRegistrarNoZookeeperOSlaveNaPortaCorretamente() throws Exception {
-		AtlasSlave slave = new AtlasSlave(zk, "localhost",8080);
+		AtlasSlave slave = new AtlasSlave(zk,"172.19.160.111:8080", "localhost",8080,"target/?fileName=haproxy.cfg","ls");
 		slave.start();
 
 		ServiceDiscovery<Object> discovery = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").build();
@@ -76,21 +76,19 @@ public class IntegrationTest {
 	
 	@Test
 	public void deveriaComunicar() throws Exception {
-		
+		new File("target/tmp").delete();
 		AtlasMaster master = new AtlasMaster(zk, "localhost", 8081);
 		master.start();
 
-		AtlasSlave slave1 = new AtlasSlave(zk, "localhost",8082);
-		
+		AtlasSlave slave1 = new AtlasSlave(zk,"172.19.160.111:8080", "localhost",8082,"target/tmp/?fileName=haproxy1.cfg","touch?args=target/ha1");
 		slave1.start();
 		
-		AtlasSlave slave2 = new AtlasSlave(zk, "localhost",8083);
+		AtlasSlave slave2 = new AtlasSlave(zk,"172.19.160.111:8080", "localhost",8083,"target/tmp/?fileName=haproxy2.cfg","touch?args=target/ha2");
 		slave2.start();
 	
 		HttpURLConnection con = (HttpURLConnection) new URL("http://localhost:8081/update-notify").openConnection();
 		int responseCode = con.getResponseCode();
 
-		Thread.sleep(2000);
 		
 		assertThat(responseCode,is(200));
 

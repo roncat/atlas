@@ -13,42 +13,40 @@ public class AtlasSlave {
 
 	private CamelContext context;
 	private CuratorFramework client;
-	private ServiceInstance<Object> instance;
 	private ServiceDiscovery<Object> service;
-	private ReceiveUpdateFromMasterRouter receiveUpdateMarathonTasksRouter;
 
-	public AtlasSlave(String zk, String hostname, Integer port) throws Exception {
+	public AtlasSlave(String zk, String marathonUrl, String hostname, Integer port, String fileDest, String command) throws Exception {
 		context = new DefaultCamelContext();
-		receiveUpdateMarathonTasksRouter = new ReceiveUpdateFromMasterRouter(hostname,port);
+		context.addRoutes(new ReceiveUpdateFromMasterRouter(hostname, port));
+		context.addRoutes(new UpdateAppsMarathonRouter(marathonUrl, fileDest, command));
 
 		client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
-		
-		instance = ServiceInstance.builder().name("slave").address(hostname).port(port).build();
-		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();
-		
+
+		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(ServiceInstance.builder().name("slave").address(hostname).port(port).build()).build();
 	}
-	
 
 	public static void main(String[] args) throws Exception {
 
 		String zk = args[0];
-		String hostname = args[1];
-		Integer port =Integer.parseInt(args[2]);
+		String marathonUrl = args[1];
+		String hostname = args[2];
+		Integer port = Integer.parseInt(args[3]);
 
-		new AtlasSlave(zk, hostname,port).start();
-	
+		String fileDest = args[4];
+		String command = args[5];
+		new AtlasSlave(zk, marathonUrl, hostname, port, fileDest, command).start();
+
 	}
 
 	public void start() throws Exception {
-		context.addRoutes(receiveUpdateMarathonTasksRouter);
-		context.start(); 
+
+		context.start();
 		service.start();
 	}
 
 	public void stop() throws Exception {
 		context.stop();
 	}
-
 
 }

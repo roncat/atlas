@@ -1,0 +1,50 @@
+global
+    log 127.0.0.1 local0 notice
+    maxconn 10000
+    user haproxy
+    group haproxy
+
+defaults
+    log     global
+    mode    http
+    retries 3
+    option redispatch
+    timeout connect  300000
+    timeout client  300000
+    timeout server  300000
+    timeout check 5000ms
+
+listen stats :1936
+    mode http
+    stats enable
+    stats uri /
+
+#foreach ($port in $body.getPortsMapping())
+frontend port-${port}-in
+    bind *:${port}
+
+#set( $acls = $body.getAcls(8080) )
+#foreach ($key in $acls.keySet())
+    acl has_${body.escape($key)}_${port} $acls.get($key)
+    use_backend ${body.escape($key)}_cluster_${port} if has_${body.escape($key)}_${port}
+
+#end
+
+
+#foreach ($key in $acls.keySet() )
+backend ${body.escape($key)}_cluster_${port}
+    balance roundrobin
+    option httpclose
+    option forwardfor
+#foreach ($instance in $body.getServersFrom($key,$port))
+    server ${body.escape($key)}-${foreach.count} ${instance.host}:${instance.port} check
+#end
+
+#end
+
+
+#end
+
+
+
+
