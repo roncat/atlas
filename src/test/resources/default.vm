@@ -1,39 +1,14 @@
-global
-        log /dev/log    local0
-        log /dev/log    local1 notice
-        chroot /var/lib/haproxy
-        user haproxy
-        group haproxy
-        daemon
-        maxconn 1024
+ carlos $body.getPortsMapping().size();
+ 
+ #foreach ($port in $body.getPortsMapping())
+ $port
+ #end
+ 
+#set ($acls = $body.getAcls(8080))
 
-defaults
-        log     global
-        mode    http
-        option  httplog
-        option  dontlognull
-        timeout http-request 5s
-        timeout connect 5s
-        timeout server 10s
-        timeout client 30s
-
-#foreach ($port in $body.ports)
-
-frontend frontend-for-$port
-    bind *:$port
-#foreach ($app in $body.apps($port))
-    acl has::$app.safeId() $app.acl
-    use_backend servers::$app.safeId()::$port if has::$app.safeId()::$port
-#end
-
-
-#foreach ($app in $body.apps($port))
-backend servers::$app.safeId()::$port
-    balance roundrobin
-    option httpclose
-    option forwardfor
-#foreach ($instance in $app.instances)
-    server $app.safeId()-$foreach.count $instance.host:$instance.port check
-#end
-#end
-#end
+#foreach ($acl in $acls.keySet() )
+ $acl
+ $acls.get($acl)
+ #end
+ 
+ 
