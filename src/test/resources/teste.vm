@@ -1,0 +1,3 @@
+ #foreach ($app in $body.apps)
+ $app.id
+ #end

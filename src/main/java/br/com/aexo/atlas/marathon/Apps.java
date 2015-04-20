@@ -3,9 +3,7 @@ package br.com.aexo.atlas.marathon;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.aexo.atlas.model.App;
-
-public class Marathon {
+public class Apps {
 
 	List<App> apps = new ArrayList<App>();
 

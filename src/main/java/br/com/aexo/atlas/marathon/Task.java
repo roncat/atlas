@@ -3,7 +3,7 @@ package br.com.aexo.atlas.marathon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarathonTask {
+public class Task {
 
 	private String appId;
 	private String id;
@@ -28,7 +28,7 @@ public class MarathonTask {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		MarathonTask other = (MarathonTask) obj;
+		Task other = (Task) obj;
 		if (appId == null) {
 			if (other.appId != null)
 				return false;

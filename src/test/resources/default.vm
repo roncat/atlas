@@ -17,25 +17,23 @@ defaults
         timeout server 10s
         timeout client 30s
 
-#foreach ($app in ${body.apps})  
-#foreach ($servicePort in $app.ports())
-frontend frontend::${app.id}::${servicePort}
-    bind *:${servicePort}
-    acl has::${app.id}::${servicePort} ${app.acl}
-    use_backend servers::${app.id}::${servicePort} if has::${app.id}::${servicePort}
-	#end
+#foreach ($port in $body.ports)
+
+frontend frontend-for-$port
+    bind *:$port
+#foreach ($app in $body.apps($port))
+    acl has::$app.safeId() $app.acl
+    use_backend servers::$app.safeId()::$port if has::$app.safeId()::$port
 #end
 
 
-#foreach ($app in ${body.apps})  
-#foreach ($servicePort in $app.ports())
-backend servers::${app.id}::${servicePort}
+#foreach ($app in $body.apps($port))
+backend servers::$app.safeId()::$port
     balance roundrobin
     option httpclose
     option forwardfor
-#foreach ($instance in $app.instances($servicePort))
-    server ${app.id}-${foreach.count} ${instance.host}:${instance.port} check
+#foreach ($instance in $app.instances)
+    server $app.safeId()-$foreach.count $instance.host:$instance.port check
 #end
 #end
 #end
-

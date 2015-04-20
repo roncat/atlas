@@ -1,19 +1,22 @@
 package br.com.aexo.atlas.marathon;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class MarathonTasks {
+public class Tasks {
 
-	private List<MarathonTask> tasks = new ArrayList<>();
+	private List<Task> tasks = new ArrayList<>();
 
-	public List<MarathonTask> getTasks() {
+	public List<Task> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<MarathonTask> tasks) {
+	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
+	
 
 	@Override
 	public String toString() {
