@@ -16,12 +16,15 @@ public class AtlasSlave {
 	private ServiceDiscovery<Object> service;
 
 	public AtlasSlave(String zk, String marathonUrl, String hostname, Integer port, String fileDest, String command) throws Exception {
-		context = new DefaultCamelContext();
-		context.addRoutes(new ReceiveUpdateFromMasterRouter(hostname, port));
-		context.addRoutes(new UpdateAppsMarathonRouter(marathonUrl, fileDest, command));
-
+		
 		client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
+		
+		context = new DefaultCamelContext();
+		context.addRoutes(new ReceiveUpdateFromMasterRouter(hostname, port));
+		context.addRoutes(new UpdateAppsMarathonRouter(marathonUrl, fileDest, command,client));
+
+	
 
 		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(ServiceInstance.builder().name("slave").address(hostname).port(port).build()).build();
 	}

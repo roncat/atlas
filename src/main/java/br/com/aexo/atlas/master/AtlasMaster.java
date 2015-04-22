@@ -20,10 +20,16 @@ public class AtlasMaster {
 		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
 
+		if (client.checkExists().forPath("/acls")==null){
+			client.create().forPath("/acls");
+		}
+		
+		
 		context = new DefaultCamelContext();
 		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client, hostname, port));
 		context.addRoutes(new NotifySlavesRouter(client));
 		context.addRoutes(new NotifySlaveRouter());
+		context.addRoutes(new ACLServiceRouter(hostname,port,client));
 
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
 		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();

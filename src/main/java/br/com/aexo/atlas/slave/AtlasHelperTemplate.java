@@ -1,4 +1,4 @@
-package br.com.aexo.atlas;
+package br.com.aexo.atlas.slave;
 
 import java.util.List;
 import java.util.Map;

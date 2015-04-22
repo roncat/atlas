@@ -1,5 +1,14 @@
+load("nashorn:mozilla_compat.js");
+
 marathonApps = JSON.parse(headers.marathonApps);
 marathonTasks = JSON.parse(headers.marathonTasks);
+atlasAcls = JSON.parse(headers.atlasAcls);
+
+aacls = {};
+for (index in atlasAcls) {
+	aacls[atlasAcls[index].appId] = atlasAcls[index].acl;
+}
+
 
 apps = {};
 for (index in marathonApps.apps) {
@@ -17,7 +26,7 @@ function getAcls(port) {
 		for (i in portsMapping) {
 			portMapping = portsMapping[i];
 			if (port == portMapping.containerPort) {
-				acls[app.id] = "path_beg " + app.id;
+				acls[app.id] =aacls[app.id];
 			}
 		}
 	}
@@ -91,7 +100,7 @@ function escape(string){
 
 // implementa uma interface java para ser usada no velocity
 
-load("nashorn:mozilla_compat.js");
+
 var helper = Java.type('br.com.aexo.atlas.AtlasHelperTemplate');
 var helperImpl = Java.extend(helper, {
 	getPortsMapping : getPortsMapping,

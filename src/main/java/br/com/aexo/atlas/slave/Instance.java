@@ -1,4 +1,4 @@
-package br.com.aexo.atlas;
+package br.com.aexo.atlas.slave;
 
 public class Instance {
 

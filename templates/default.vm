@@ -23,15 +23,19 @@ listen stats :1936
 frontend port-${port}-in
     bind *:${port}
 
-#set( $acls = $body.getAcls(8080) )
-#foreach ($key in $acls.keySet())
-    acl has_${body.escape($key)}_${port} $acls.get($key)
-    use_backend ${body.escape($key)}_cluster_${port} if has_${body.escape($key)}_${port}
+#set( $acls = $body.getAcls($port) )
 
+
+#foreach ($key in $acls.keySet())
+#if ($acls.get($key) != $null)
+    acl has_${body.escape($key)}_${port} ${acls.get($key)}
+    use_backend ${body.escape($key)}_cluster_${port} if has_${body.escape($key)}_${port}
+#end
 #end
 
 
 #foreach ($key in $acls.keySet() )
+#if ($acls.get($key) != $null)
 backend ${body.escape($key)}_cluster_${port}
     balance roundrobin
     option httpclose
@@ -39,7 +43,7 @@ backend ${body.escape($key)}_cluster_${port}
 #foreach ($instance in $body.getServersFrom($key,$port))
     server ${body.escape($key)}-${foreach.count} ${instance.host}:${instance.port} check
 #end
-
+#end
 #end
 
 
