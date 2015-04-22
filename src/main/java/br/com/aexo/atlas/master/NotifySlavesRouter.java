@@ -10,6 +10,12 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 
+/**
+ * route usage for discovery slaves and scheduler notification update
+ * 
+ * @author euprogramador
+ *
+ */
 public class NotifySlavesRouter extends RouteBuilder {
 
 	private CuratorFramework client;
@@ -30,7 +36,6 @@ public class NotifySlavesRouter extends RouteBuilder {
 				Collection<ServiceInstance<Object>> instances = discovery.queryForInstances("slave");
 				exchange.getOut().setBody(instances);
 			}
-		}).split()
-		.body().to("seda:notify-slave");
+		}).split().body().to("seda:notify-slave");
 	}
 }

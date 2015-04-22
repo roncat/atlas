@@ -6,6 +6,12 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 
+/**
+ * route provides centralized endpoint for notification updates in marathon
+ * 
+ * @author euprogramador
+ *
+ */
 public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 
 	private int port;
@@ -24,9 +30,7 @@ public class ReceiveUpdateMarathonTasksRouter extends RouteBuilder {
 		ServiceDiscovery<Object> discovery = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").build();
 		discovery.start();
 
-		from("restlet:http://" + hostname + ":" + port + "/update-notify?restletMethods=get")
-		.to(ExchangePattern.InOnly, "seda:notify-slaves")
-		.transform(constant("ok"));
+		from("restlet:http://" + hostname + ":" + port + "/update-notify?restletMethods=get").to(ExchangePattern.InOnly, "seda:notify-slaves").transform(constant("ok"));
 
 	}
 }

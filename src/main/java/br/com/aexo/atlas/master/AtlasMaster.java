@@ -9,6 +9,13 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 
+/**
+ * Provides atlas master functions of registry acls and notify updates from
+ * slaves
+ * 
+ * @author euprogramador
+ *
+ */
 public class AtlasMaster {
 
 	private CamelContext context;
@@ -20,17 +27,19 @@ public class AtlasMaster {
 		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
 
-		if (client.checkExists().forPath("/acls")==null){
+		// create path to acls does not exists
+		if (client.checkExists().forPath("/acls") == null) {
 			client.create().forPath("/acls");
 		}
-		
-		
+
+		// create routes camel from master
 		context = new DefaultCamelContext();
 		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client, hostname, port));
 		context.addRoutes(new NotifySlavesRouter(client));
 		context.addRoutes(new NotifySlaveRouter());
-		context.addRoutes(new ACLServiceRouter(hostname,port,client));
+		context.addRoutes(new ACLServiceRouter(hostname, port, client));
 
+		// registry service in servers for name master for discovery service
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
 		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();
 
@@ -44,11 +53,21 @@ public class AtlasMaster {
 		new AtlasMaster(zk, hostname, port).start();
 	}
 
+	/**
+	 * start master
+	 * 
+	 * @throws Exception
+	 */
 	public void start() throws Exception {
 		context.start();
 		service.start();
 	}
 
+	/**
+	 * stop master
+	 * 
+	 * @throws Exception
+	 */
 	public void stop() throws Exception {
 		context.stop();
 	}

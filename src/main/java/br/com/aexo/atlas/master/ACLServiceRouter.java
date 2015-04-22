@@ -11,6 +11,12 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.apache.curator.framework.CuratorFramework;
 
+/**
+ * routes provides rest acl management
+ * 
+ * @author euprogramador
+ *
+ */
 public class ACLServiceRouter extends RouteBuilder {
 
 	private CuratorFramework client;
@@ -26,8 +32,16 @@ public class ACLServiceRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		rest("/acls/").path("{*}").delete().to("direct:deleteAcl").get().to("direct:listAcls").post().to("direct:saveAcl");
+		// camel rest endpoints manage acls ha-proxy
+		rest("/acls/{*}")
 
+		.delete().to("direct:deleteAcl")
+
+		.get().to("direct:listAcls")
+
+		.post().to("direct:saveAcl");
+
+		// route list acls from zookeeper
 		from("direct:listAcls").process(new Processor() {
 
 			@Override
@@ -48,6 +62,7 @@ public class ACLServiceRouter extends RouteBuilder {
 			}
 		}).marshal().json(JsonLibrary.Jackson).setHeader("content-type").constant("application/json").to("mock:result");
 
+		// route save acls from zookeeper
 		from("direct:saveAcl")
 				.convertBodyTo(String.class)
 				.setHeader("content")
@@ -59,6 +74,7 @@ public class ACLServiceRouter extends RouteBuilder {
 						"var app = JSON.parse(headers.content);var client = body; app.appId = '/acls/'+encodeURIComponent(app.appId); if ( client.checkExists().forPath(app.appId)==null) { client.create().forPath(app.appId,app.acl.getBytes()); } else { client.setData().forPath(app.appId,app.acl.getBytes()); }")
 				.transform().constant("OK");
 
+		// route delete acls from zookeeper
 		from("direct:deleteAcl").process(new Processor() {
 
 			@Override
@@ -70,10 +86,4 @@ public class ACLServiceRouter extends RouteBuilder {
 				.javaScript("var client = body; appId = '/acls/'+encodeURIComponent(headers.content); if ( client.checkExists().forPath(appId)!=null) { client.delete().forPath(appId); }").transform()
 				.constant(null);
 	}
-
-	public static void main(String[] args) {
-		System.out.println("http://localhost:8081/acls/suc".split("localhost:8081/acls")[1]);
-
-	}
-
 }

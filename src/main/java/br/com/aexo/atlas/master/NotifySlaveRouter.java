@@ -5,8 +5,13 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 
+/**
+ * route provides notification one slave via http
+ * 
+ * @author euprogramador
+ *
+ */
 public class NotifySlaveRouter extends RouteBuilder {
-
 
 	@Override
 	public void configure() throws Exception {
