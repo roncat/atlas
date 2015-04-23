@@ -32,15 +32,7 @@ public class ACLServiceRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		// camel rest endpoints manage acls ha-proxy
-		rest("/acls/{*}")
-
-		.delete().to("direct:deleteAcl")
-
-		.get().to("direct:listAcls")
-
-		.post().to("direct:saveAcl");
-
+		
 		// route list acls from zookeeper
 		from("direct:listAcls").process(new Processor() {
 
@@ -60,7 +52,7 @@ public class ACLServiceRouter extends RouteBuilder {
 
 				exchange.getOut().setBody(acls);
 			}
-		}).marshal().json(JsonLibrary.Jackson).setHeader("content-type").constant("application/json").to("mock:result");
+		}).marshal().json(JsonLibrary.Jackson).setHeader("content-type").constant("application/json").setHeader("accept").constant("application/json");
 
 		// route save acls from zookeeper
 		from("direct:saveAcl")
@@ -71,7 +63,8 @@ public class ACLServiceRouter extends RouteBuilder {
 				.constant(client)
 				.transform()
 				.javaScript(
-						"var app = JSON.parse(headers.content);var client = body; app.appId = '/acls/'+encodeURIComponent(app.appId); if ( client.checkExists().forPath(app.appId)==null) { client.create().forPath(app.appId,app.acl.getBytes()); } else { client.setData().forPath(app.appId,app.acl.getBytes()); }")
+						" var app = JSON.parse(headers.content); var client = body; app.appId = '/acls/'+encodeURIComponent(app.appId); if ( client.checkExists().forPath(app.appId)==null) {  client.create().forPath(app.appId,app.acl.getBytes());  } else {  client.setData().forPath(app.appId,app.acl.getBytes()); }")
+
 				.transform().constant("OK");
 
 		// route delete acls from zookeeper

@@ -1,0 +1,46 @@
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.navbar-brand {
+  color:#ffffff !important;
+}
+
+#navbar {
+	background-color: #10142B;
+}
+
+.active_app {
+	background-color: #6DA87A;
+}
+
+.atlas-list-header { 
+	font-weight:bold;
+	color:#fff;
+	background-color: #3D3C3C;
+	padding:30px 5px 5px 5px;
+	
+}
+.atlas-list-line {
+	vertical-align:middle;
+	line-height: 40px;
+		padding:10px;
+	border:1px #fafafa solid 
+}
+
+.atlas-list-opts {
+	text-align: right;	
+}
+
+.atlas-list-inactive-app {
+	background-color: #ffffff !important;
+}
+
+.atlas-list-active-app {
+	background-color: #CDE5DC;
+}
+.atlas-list-mis-app {
+	background-color: #DF9191;
+}

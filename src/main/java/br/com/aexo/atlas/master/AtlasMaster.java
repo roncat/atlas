@@ -31,13 +31,21 @@ public class AtlasMaster {
 		if (client.checkExists().forPath("/acls") == null) {
 			client.create().forPath("/acls");
 		}
+		
+		if (client.checkExists().forPath("/template") == null) {
+			client.create().forPath("/template","teste".getBytes());
+		}
 
 		// create routes camel from master
 		context = new DefaultCamelContext();
 		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client, hostname, port));
 		context.addRoutes(new NotifySlavesRouter(client));
 		context.addRoutes(new NotifySlaveRouter());
+		context.addRoutes(new ACLResourceRouter(hostname, port));
 		context.addRoutes(new ACLServiceRouter(hostname, port, client));
+		context.addRoutes(new TemplateResourceRouter(hostname, port));
+		context.addRoutes(new TemplateServiceRouter(client));
+		context.addRoutes(new UIAtlasMasterRouter(hostname,port));
 
 		// registry service in servers for name master for discovery service
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
