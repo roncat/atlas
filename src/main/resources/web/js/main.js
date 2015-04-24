@@ -11,7 +11,9 @@ requirejs.config({
 		'angular-touch' : 'vendors/angular-touch/angular-touch.min',
 		'angular-messages' : 'vendors/angular-messages/angular-messages.min',
 		'ui.ace' : 'vendors/angular-ui-ace/ui-ace.min',
-		'domReady' : 'vendors/requirejs-domready/domReady'
+		'domReady' : 'vendors/requirejs-domready/domReady',
+		'ace' : 'vendors/ace-builds/src-min-noconflict/ace',
+		'ace-ext' : 'vendors/ace-builds/src-min-noconflict/ext-language_tools'
 	},
 	shim : {
 		"bootstrap" : {
@@ -43,12 +45,17 @@ requirejs.config({
 		},
 		'ui.ace' : {
 			deps : [ 'angular' ]
-		}
+		},
+		'ace-ext' : {
+			deps : [ 'ui.ace' ]
+		},
+		
 	}
 });
 
-define([ 'require', 'angular', 'app/app', 'app/routes' ],
+define([ 'require', 'angular','jquery', 'app/app', 'app/routes','ace','ace-ext' ],
 		function(require, ng) {
+		
 			require([ 'domReady!' ], function(document) {
 				ng.bootstrap(document, [ 'app' ]);
 			});

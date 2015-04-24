@@ -12,8 +12,8 @@ public class Test {
 		TestingServer testingServer = new TestingServer();
 		String zk = testingServer.getConnectString();
 		
-		AtlasMaster master = new AtlasMaster(zk, "localhost", 8080);
-		AtlasSlave slave = new AtlasSlave(zk, "172.19.160.111:8080", "localhost", 8081, "target/tmp/?fileName=haproxy2.cfg", "touch?args=target/tmp/ha2");
+		AtlasMaster master = new AtlasMaster(zk, "localhost", 8081);
+		AtlasSlave slave = new AtlasSlave(zk, "172.19.160.111:8080", "localhost", 8082, "target/tmp/?fileName=haproxy2.cfg", "touch?args=target/tmp/ha2");
 		
 		master.start();
 		slave.start();

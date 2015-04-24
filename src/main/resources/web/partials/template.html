@@ -1,5 +1,54 @@
-<div ui-ace="{
-        mode: 'json',
-        theme: 'idle_fingers',
-        useWrapMode: true
-      }"></div>
+<h3>Template script</h3>
+
+<div class="row ">
+	<div class="col-md-6">
+		<div class="atlas-editor"
+			ui-ace="{
+       
+       	  require: ['ace/ext/language_tools'],
+		  advanced: {
+		      enableSnippets: true,
+		      enableBasicAutocompletion: true,
+		      enableLiveAutocompletion: true
+		  },
+          mode: 'javascript',
+          theme: 'tomorrow_night',
+          useWrapMode: true
+      }"
+			ng-model="templateController.script"></div>
+	</div>
+	<div class="col-md-6">
+
+		<div role="tabpanel">
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#testing"
+					aria-controls="home" role="tab" data-toggle="tab">Testing</a></li>
+				<li role="presentation"><a href="#help" aria-controls="profile"
+					role="tab" data-toggle="tab">Help</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="testing">
+
+					<h4>Testing</h4>
+					<button class="btn btn-success">Test script</button>
+					<p><p>
+					output script:
+					<pre>teste</pre>
+
+				</div>
+				<div role="tabpanel" class="tab-pane" id="help">
+					<h4>Help</h4>
+				</div>
+			</div>
+
+		</div>
+
+
+
+	</div>
+</div>
+

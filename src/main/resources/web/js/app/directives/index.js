@@ -1,7 +1,7 @@
 (function() {
 
 	var dependencies = [ //
-	'./directives' //
+	'./directives'//
 	];
 
 	define(dependencies, function() {

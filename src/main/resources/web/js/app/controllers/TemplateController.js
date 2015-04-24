@@ -1,8 +1,14 @@
 define([ './controllers' ], function(controllers) {
-	'use strict';
+	//'use strict';
 
 	controllers.controller('TemplateController', TemplateController);
 	function TemplateController() {
+		
+		t = this;
+		
+		this.script = "test";
+		
+	
 	}
 
 });

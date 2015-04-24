@@ -2,7 +2,7 @@ define([
     'angular',
     'angular-route', 'angular-resource',
 	'angular-cookies', 'angular-sanitize', 'angular-animate',
-	'angular-touch', 'angular-messages', 'ui.ace',
+	'angular-touch', 'angular-messages', 'ui.ace','bootstrap',
     './controllers/index',
     './directives/index',
     './filters/index',
