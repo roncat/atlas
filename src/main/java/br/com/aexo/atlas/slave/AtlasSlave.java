@@ -9,6 +9,8 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 
+import br.com.aexo.atlas.commons.ExecScriptRouter;
+
 public class AtlasSlave {
 
 	private CamelContext context;
@@ -23,8 +25,7 @@ public class AtlasSlave {
 		context = new DefaultCamelContext();
 		context.addRoutes(new ReceiveUpdateFromMasterRouter(hostname, port));
 		context.addRoutes(new UpdateAppsMarathonRouter(marathonUrl, fileDest, command,client));
-
-	
+		context.addRoutes(new ExecScriptRouter());
 
 		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(ServiceInstance.builder().name("slave").address(hostname).port(port).build()).build();
 	}

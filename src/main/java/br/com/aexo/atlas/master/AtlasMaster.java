@@ -9,6 +9,8 @@ import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
 
+import br.com.aexo.atlas.commons.ExecScriptRouter;
+
 /**
  * Provides atlas master functions of registry acls and notify updates from
  * slaves
@@ -46,8 +48,9 @@ public class AtlasMaster {
 		context.addRoutes(new TemplateResourceRouter(hostname, port));
 		context.addRoutes(new TemplateServiceRouter(client));
 		context.addRoutes(new UIAtlasMasterRouter(hostname,port));
-		context.addRoutes(new AclRulesReosourceRouter(marathonUrl,hostname,port));
+		context.addRoutes(new ACLRulesResourceRouter(marathonUrl,hostname,port));
 		context.addRoutes(new TestScriptResourceRouter(marathonUrl,hostname,port));
+		context.addRoutes(new ExecScriptRouter());
 
 		// registry service in servers for name master for discovery service
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();

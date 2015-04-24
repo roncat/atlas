@@ -9,6 +9,12 @@ import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 
+/**
+ * routes responsible for providing the UI
+ * 
+ * @author euprogramador
+ *
+ */
 public class UIAtlasMasterRouter extends RouteBuilder {
 
 	private String hostname;
@@ -27,9 +33,9 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 			public void process(Exchange exchange) throws Exception {
 
 				String url = exchange.getIn().getHeader("CamelHttpUri").toString();
-			 
+
 				String[] split = url.split(hostname + ":" + port + "/ui/");
-				String relativePath = split.length==2 ? split[1] : "";
+				String relativePath = split.length == 2 ? split[1] : "";
 
 				if (relativePath.isEmpty()) {
 					relativePath = "index.html";
@@ -39,14 +45,14 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 				MimetypesFileTypeMap map = new MimetypesFileTypeMap();
 
 				String mimeType = map.getContentType(pathStr);
-				
+
 				Message msg = exchange.getOut();
 
 				try {
-					if (!new File(getClass().getClassLoader().getResource(pathStr).toURI()).exists()){
+					if (!new File(getClass().getClassLoader().getResource(pathStr).toURI()).exists()) {
 						throw new RuntimeException("not found");
 					}
-					
+
 					msg.setBody(getClass().getClassLoader().getResourceAsStream(pathStr));
 					msg.setHeader(Exchange.CONTENT_TYPE, mimeType);
 					msg.setHeader(Exchange.HTTP_RESPONSE_CODE, "200");

@@ -3,6 +3,12 @@ package br.com.aexo.atlas.master;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 
+/**
+ * routes for save and recovery of a template script
+ * 
+ * @author euprogramador
+ *
+ */
 public class TemplateResourceRouter extends RouteBuilder {
 
 	private String host;
@@ -17,9 +23,9 @@ public class TemplateResourceRouter extends RouteBuilder {
 	public void configure() throws Exception {
 		from("restlet:http://" + host + ":" + port + "/template?restletMethods=get,post")
 		.choice()
-		.when(header(Exchange.HTTP_METHOD).isEqualTo("GET")).to("direct:getTemplate")
-		.when(header(Exchange.HTTP_METHOD).isEqualTo("POST")).to("direct:saveTemplate")
-		.otherwise().to("mock:discard")
+			.when(header(Exchange.HTTP_METHOD).isEqualTo("GET")).to("direct:getTemplate")
+			.when(header(Exchange.HTTP_METHOD).isEqualTo("POST")).to("direct:saveTemplate")
+			.otherwise().to("mock:discard")
 		.endChoice();
 	}
 

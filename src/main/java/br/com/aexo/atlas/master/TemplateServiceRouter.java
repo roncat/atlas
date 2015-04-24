@@ -5,6 +5,12 @@ import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.curator.framework.CuratorFramework;
 
+/**
+ * routes to prove saves and retrieves routes
+ * 
+ * @author euprogramador
+ *
+ */
 public class TemplateServiceRouter extends RouteBuilder {
 
 	private CuratorFramework client;
@@ -16,19 +22,20 @@ public class TemplateServiceRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		from("direct:getTemplate").process(new Processor(){
+		from("direct:getTemplate").process(new Processor() {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				String script = new String(client.getData().forPath("/template"));
 				exchange.getOut().setBody(script);
-			}}).setHeader("content-type",constant("text/plain")).convertBodyTo(String.class);
+			}
+		}).setHeader("content-type", constant("text/plain")).convertBodyTo(String.class);
 
-		from("direct:saveTemplate").process(new Processor(){
+		from("direct:saveTemplate").process(new Processor() {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				client.setData().forPath("/template",exchange.getIn().getBody(String.class).getBytes());
+				client.setData().forPath("/template", exchange.getIn().getBody(String.class).getBytes());
 			}
 		});
 	}
