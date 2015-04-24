@@ -21,8 +21,6 @@ public class TemplateResourceRouter extends RouteBuilder {
 		.when(header(Exchange.HTTP_METHOD).isEqualTo("POST")).to("direct:saveTemplate")
 		.otherwise().to("mock:discard")
 		.endChoice();
-		
-
 	}
 
 }

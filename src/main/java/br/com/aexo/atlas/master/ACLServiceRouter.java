@@ -32,7 +32,6 @@ public class ACLServiceRouter extends RouteBuilder {
 	@Override
 	public void configure() throws Exception {
 
-		
 		// route list acls from zookeeper
 		from("direct:listAcls").process(new Processor() {
 
@@ -63,9 +62,8 @@ public class ACLServiceRouter extends RouteBuilder {
 				.constant(client)
 				.transform()
 				.javaScript(
-						" var app = JSON.parse(headers.content); var client = body; app.appId = '/acls/'+encodeURIComponent(app.appId); if ( client.checkExists().forPath(app.appId)==null) {  client.create().forPath(app.appId,app.acl.getBytes());  } else {  client.setData().forPath(app.appId,app.acl.getBytes()); }")
-
-				.transform().constant("OK");
+						" var app = JSON.parse(headers.content); var client = body; app.appId = '/acls/'+encodeURIComponent(app.appId); if ( client.checkExists().forPath(app.appId)==null) {  client.create().forPath(app.appId,app.acl.getBytes());  } else {  client.setData().forPath(app.appId,app.acl.getBytes()); } body = headers.content")
+		;
 
 		// route delete acls from zookeeper
 		from("direct:deleteAcl").process(new Processor() {

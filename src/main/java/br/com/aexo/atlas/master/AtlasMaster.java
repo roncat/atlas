@@ -22,7 +22,7 @@ public class AtlasMaster {
 	private ServiceInstance<Object> instance;
 	private ServiceDiscovery<Object> service;
 
-	public AtlasMaster(String zk, String hostname, Integer port) throws Exception {
+	public AtlasMaster(String zk,String marathonUrl, String hostname, Integer port) throws Exception {
 
 		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
@@ -46,6 +46,8 @@ public class AtlasMaster {
 		context.addRoutes(new TemplateResourceRouter(hostname, port));
 		context.addRoutes(new TemplateServiceRouter(client));
 		context.addRoutes(new UIAtlasMasterRouter(hostname,port));
+		context.addRoutes(new AclRulesReosourceRouter(marathonUrl,hostname,port));
+		context.addRoutes(new TestScriptResourceRouter(marathonUrl,hostname,port));
 
 		// registry service in servers for name master for discovery service
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
@@ -55,10 +57,11 @@ public class AtlasMaster {
 
 	public static void main(String[] args) throws Exception {
 		String zk = args[0];
-		String hostname = args[1];
-		Integer port = Integer.parseInt(args[2]);
+		String marathonUrl = args[1];
+		String hostname = args[2];
+		Integer port = Integer.parseInt(args[3]);
 
-		new AtlasMaster(zk, hostname, port).start();
+		new AtlasMaster(zk, marathonUrl, hostname, port).start();
 	}
 
 	/**

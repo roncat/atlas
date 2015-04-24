@@ -58,7 +58,7 @@ public class IntegrationTest {
 
 	@Test
 	public void deveriaRegistrarNoZookeeperOMasterNaPortaCorretamente() throws Exception {
-		AtlasMaster master = new AtlasMaster(zk, "localhost", 8080);
+		AtlasMaster master = new AtlasMaster(zk,"172.19.160.111:8080", "localhost", 8080); 
 		master.start();
 
 		ServiceDiscovery<Object> discovery = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").build();
@@ -75,7 +75,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaComunicarUmaAtualizacaoDeStatus() throws Exception {
 		new File("target/tmp").delete();
-		AtlasMaster master = new AtlasMaster(zk, "localhost", 8081);
+		AtlasMaster master = new AtlasMaster(zk, "172.19.160.111:8080","localhost", 8081);
 		master.start();
 
 		String aclsURI = "http://localhost:8081/acls";
@@ -114,7 +114,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaGerenciarAsAclsViaApi() throws Exception {
 
-		AtlasMaster master = new AtlasMaster(zk, "localhost", 8081);
+		AtlasMaster master = new AtlasMaster(zk,"172.19.160.111:8080", "localhost", 8081);
 		master.start();
 
 		

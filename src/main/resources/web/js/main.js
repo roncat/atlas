@@ -13,7 +13,8 @@ requirejs.config({
 		'ui.ace' : 'vendors/angular-ui-ace/ui-ace.min',
 		'domReady' : 'vendors/requirejs-domready/domReady',
 		'ace' : 'vendors/ace-builds/src-min-noconflict/ace',
-		'ace-ext' : 'vendors/ace-builds/src-min-noconflict/ext-language_tools'
+		'ace-ext' : 'vendors/ace-builds/src-min-noconflict/ext-language_tools',
+		'angular-safe-apply' : 'vendors/angular-safeapply/safe-apply'
 	},
 	shim : {
 		"bootstrap" : {
@@ -26,6 +27,9 @@ requirejs.config({
 			deps : [ 'angular' ]
 		},
 		'angular-resource' : {
+			deps : [ 'angular' ]
+		},
+		'angular-safe-apply' : {
 			deps : [ 'angular' ]
 		},
 		'angular-cookies' : {
@@ -53,9 +57,8 @@ requirejs.config({
 	}
 });
 
-define([ 'require', 'angular','jquery', 'app/app', 'app/routes','ace','ace-ext' ],
+define([ 'require', 'angular', 'app/app', 'app/routes'],
 		function(require, ng) {
-		
 			require([ 'domReady!' ], function(document) {
 				ng.bootstrap(document, [ 'app' ]);
 			});

@@ -2,7 +2,7 @@ define([
     'angular',
     'angular-route', 'angular-resource',
 	'angular-cookies', 'angular-sanitize', 'angular-animate',
-	'angular-touch', 'angular-messages', 'ui.ace','bootstrap',
+	'angular-touch', 'angular-messages', 'ui.ace', 'ace','ace-ext' , 'bootstrap','angular-safe-apply',
     './controllers/index',
     './directives/index',
     './filters/index',
@@ -23,6 +23,7 @@ define([
         'ngSanitize',
         'ngAnimate',
         'ngTouch',
-        'ui.ace'
+        'ui.ace',
+        'SafeApply'
     ]);
 });
