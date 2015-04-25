@@ -1,5 +1,9 @@
 package br.com.aexo.atlas.master;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
 import org.apache.curator.framework.CuratorFramework;
@@ -35,7 +39,8 @@ public class AtlasMaster {
 		}
 		
 		if (client.checkExists().forPath("/template") == null) {
-			client.create().forPath("/template","teste".getBytes());
+			Path path = Paths.get(getClass().getClassLoader().getResource("scriptdefault.cfg").toURI());
+			client.create().forPath("/template",Files.readAllBytes(path));
 		}
 
 		// create routes camel from master

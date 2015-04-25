@@ -1,0 +1,384 @@
+{
+  "apps": [
+    {
+      "id": "/bridged-webapp",
+      "cmd": "python3 -m http.server 8080",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 2,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        0
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 8080,
+              "hostPort": 0,
+              "servicePort": 8080,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-18T13:24:52.611Z",
+      "tasksStaged": 0,
+      "tasksRunning": 2,
+      "tasksHealthy": 2,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/modcluster",
+      "cmd": "python3 -m http.server 3000",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        10001
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort": 0,
+              "servicePort": 10001,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-19T23:56:20.806Z",
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 1,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/modcluster2",
+      "cmd": "python3 -m http.server 3000",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 2,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        10002
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort": 0,
+              "servicePort": 10002,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-20T01:32:46.030Z",
+      "tasksStaged": 0,
+      "tasksRunning": 2,
+      "tasksHealthy": 2,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/modcluster3",
+      "cmd": "python3 -m http.server 3000",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 2,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        10003
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort": 0,
+              "servicePort": 10003,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-20T01:33:03.817Z",
+      "tasksStaged": 0,
+      "tasksRunning": 2,
+      "tasksHealthy": 2,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/modcluster4",
+      "cmd": "python3 -m http.server 3000",
+      "args": null,
+      "user": null,
+      "env": {
+        "ATLAS_PORTS": "3000:8080"
+      },
+      "instances": 2,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        10004
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 3000,
+              "hostPort": 0,
+              "servicePort": 10004,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-20T01:43:20.080Z",
+      "tasksStaged": 0,
+      "tasksRunning": 2,
+      "tasksHealthy": 2,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    },
+    {
+      "id": "/sucupirafake",
+      "cmd": "python3 -m http.server 8080",
+      "args": null,
+      "user": null,
+      "env": {},
+      "instances": 1,
+      "cpus": 0.5,
+      "mem": 64,
+      "disk": 0,
+      "executor": "",
+      "constraints": [],
+      "uris": [],
+      "storeUrls": [],
+      "ports": [
+        10000
+      ],
+      "requirePorts": false,
+      "backoffSeconds": 1,
+      "backoffFactor": 1.15,
+      "maxLaunchDelaySeconds": 3600,
+      "container": {
+        "type": "DOCKER",
+        "volumes": [],
+        "docker": {
+          "image": "python:3",
+          "network": "BRIDGE",
+          "portMappings": [
+            {
+              "containerPort": 8080,
+              "hostPort": 0,
+              "servicePort": 10000,
+              "protocol": "tcp"
+            }
+          ],
+          "privileged": false,
+          "parameters": []
+        }
+      },
+      "healthChecks": [
+        {
+          "path": "/",
+          "protocol": "HTTP",
+          "portIndex": 0,
+          "gracePeriodSeconds": 5,
+          "intervalSeconds": 20,
+          "timeoutSeconds": 20,
+          "maxConsecutiveFailures": 3
+        }
+      ],
+      "dependencies": [],
+      "upgradeStrategy": {
+        "minimumHealthCapacity": 1,
+        "maximumOverCapacity": 1
+      },
+      "labels": {},
+      "version": "2015-04-20T00:12:11.275Z",
+      "tasksStaged": 0,
+      "tasksRunning": 1,
+      "tasksHealthy": 1,
+      "tasksUnhealthy": 0,
+      "deployments": []
+    }
+  ]
+}
