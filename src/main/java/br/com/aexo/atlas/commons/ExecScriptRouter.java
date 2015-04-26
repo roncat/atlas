@@ -47,7 +47,7 @@ public class ExecScriptRouter extends RouteBuilder {
 				engine.getContext().setAttribute("marathonApps", exchange.getIn().getHeader("apps"), ScriptContext.ENGINE_SCOPE);
 				engine.getContext().setAttribute("config", writer, ScriptContext.ENGINE_SCOPE);
 				try {
-				execWithFuture(engine, script);
+					execWithFuture(engine, script);
 				} catch (Exception e){
 					e.printStackTrace(writer);
 				}

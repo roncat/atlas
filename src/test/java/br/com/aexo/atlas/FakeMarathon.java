@@ -17,14 +17,16 @@ public class FakeMarathon extends RouteBuilder {
 		this.port = port;
 	}
 
-	public void start() throws Exception{
+	public void start() throws Exception {
 		CamelContext context = new DefaultCamelContext();
 		context.addRoutes(this);
 		context.start();
 	}
-	
+
 	@Override
 	public void configure() throws Exception {
+
+		// get fake apps
 		from("restlet:http://" + hostname + ":" + port + "/v2/apps").process(new Processor() {
 
 			@Override
@@ -35,6 +37,7 @@ public class FakeMarathon extends RouteBuilder {
 			}
 		});
 
+		// get fake tasks
 		from("restlet:http://" + hostname + ":" + port + "/v2/tasks").process(new Processor() {
 
 			@Override
@@ -44,6 +47,17 @@ public class FakeMarathon extends RouteBuilder {
 				exchange.getOut().setBody(getClass().getClassLoader().getResourceAsStream("tasks.json"));
 			}
 		});
+
+		// registry fake callback url
+		from("restlet:http://" + hostname + ":" + port + "/v2/eventSubscriptions?restletMethod=post").process(new Processor() {
+			
+			@Override
+			public void process(Exchange exchange) throws Exception {
+				String body = "{\"callbackUrl\": \"http://localhost:9292/callback\",\"clientIp\": \"0:0:0:0:0:0:0:1\",\"eventType\": \"subscribe_event\"}";
+				exchange.getOut().setBody(body);
+			}
+		});
+
 	}
 
 }

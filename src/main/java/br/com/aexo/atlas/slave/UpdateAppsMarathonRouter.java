@@ -65,9 +65,10 @@ public class UpdateAppsMarathonRouter extends RouteBuilder {
 						ex = getContext().createProducerTemplate().request("http4://" + hostname + ":" + port + "/template", null);
 						String script = ex.getOut().getBody(String.class);
 
-						exchange.getIn().setHeader("acls", acls);
-						exchange.getIn().setHeader("tasks", tasks);
-						exchange.getIn().setHeader("apps", apps);
+						exchange.getOut().setHeader("acls", acls);
+						exchange.getOut().setHeader("tasks", tasks);
+						exchange.getOut().setHeader("apps", apps);
+						
 						exchange.getOut().setBody(script);
 					}
 				})

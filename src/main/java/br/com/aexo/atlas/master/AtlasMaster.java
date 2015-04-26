@@ -1,8 +1,11 @@
 package br.com.aexo.atlas.master;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -12,6 +15,7 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
+import org.apache.http.client.fluent.Request;
 
 import br.com.aexo.atlas.commons.ExecScriptRouter;
 
@@ -27,9 +31,19 @@ public class AtlasMaster {
 	private CamelContext context;
 	private ServiceInstance<Object> instance;
 	private ServiceDiscovery<Object> service;
+	private LeaderElection leader;
+	private String marathonUrl;
+	private String hostname;
+	private Integer port;
+	private ExecutorService pool = Executors.newCachedThreadPool();
+			
 
 	public AtlasMaster(String zk,String marathonUrl, String hostname, Integer port) throws Exception {
 
+		this.marathonUrl = marathonUrl;
+		this.hostname = hostname;
+		this.port = port;
+		
 		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
 
@@ -42,12 +56,14 @@ public class AtlasMaster {
 			Path path = Paths.get(getClass().getClassLoader().getResource("scriptdefault.cfg").toURI());
 			client.create().forPath("/template",Files.readAllBytes(path));
 		}
+		
+		leader = new LeaderElection(client);
 
 		// create routes camel from master
 		context = new DefaultCamelContext();
 		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client, hostname, port));
 		context.addRoutes(new NotifySlavesRouter(client));
-		context.addRoutes(new NotifySlaveRouter());
+		context.addRoutes(new NotifySlaveRouter(leader));
 		context.addRoutes(new ACLResourceRouter(hostname, port));
 		context.addRoutes(new ACLServiceRouter(hostname, port, client));
 		context.addRoutes(new TemplateResourceRouter(hostname, port));
@@ -60,7 +76,7 @@ public class AtlasMaster {
 		// registry service in servers for name master for discovery service
 		instance = ServiceInstance.builder().name("master").address(hostname).port(port).build();
 		service = ServiceDiscoveryBuilder.builder(Object.class).client(client).basePath("/servers").thisInstance(instance).build();
-
+		
 	}
 
 	public static void main(String[] args) throws Exception {
@@ -78,8 +94,32 @@ public class AtlasMaster {
 	 * @throws Exception
 	 */
 	public void start() throws Exception {
+
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					leader.start();
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).run();
+		
 		context.start();
 		service.start();
+		
+		
+		// registry callback in marathon
+		Request.Post("http://"
+				.concat(marathonUrl)
+				.concat("/v2/eventSubscriptions?callbackUrl=http://")
+				.concat(hostname)
+				.concat(":")
+				.concat(port.toString())
+				.concat("/update-notify")
+		).execute();
+				
 	}
 
 	/**

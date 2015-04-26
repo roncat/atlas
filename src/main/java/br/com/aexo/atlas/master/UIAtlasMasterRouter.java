@@ -8,6 +8,8 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.restlet.RestletConstants;
+import org.restlet.Response;
 
 /**
  * routes responsible for providing the UI
@@ -31,8 +33,18 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 
 			@Override
 			public void process(Exchange exchange) throws Exception {
-
+				Message msg = exchange.getOut();
 				String url = exchange.getIn().getHeader("CamelHttpUri").toString();
+
+				if (!url.startsWith("http://" + hostname + ":" + port + "/ui/")) {
+					Response response = exchange.getIn().getHeader(RestletConstants.RESTLET_RESPONSE, Response.class);
+
+					response.setLocationRef("http://" + hostname + ":" + port + "/ui/");
+
+					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 302);
+//					exchange.getOut().setHeader("location", "http://" + hostname + ":" + port + "/ui/");
+					return;
+				}
 
 				String[] split = url.split(hostname + ":" + port + "/ui/");
 				String relativePath = split.length == 2 ? split[1] : "";
@@ -45,8 +57,6 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 				MimetypesFileTypeMap map = new MimetypesFileTypeMap();
 
 				String mimeType = map.getContentType(pathStr);
-
-				Message msg = exchange.getOut();
 
 				try {
 					if (!new File(getClass().getClassLoader().getResource(pathStr).toURI()).exists()) {
