@@ -1,7 +1,7 @@
 #!/bin/sh
 
-$origem = $1
-
+origem=$1
+ 
 if [ $origem == "master" ]
 then
     # processo executado para suportar release branch, executando o fluxo gerando a partir do trunk
