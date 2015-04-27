@@ -50,7 +50,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaComunicarUmaAtualizacaoDeStatus() throws Exception {
 		new File("target/tmp").delete();
-		AtlasMaster master = new AtlasMaster(zk, "localhost:19000","localhost", 18081);
+		AtlasMaster master = new AtlasMaster(zk, "localhost:19000","localhost", 18081,"http://localhost:18081/update-notify");
 		master.start();
 
 		String aclsURI = "http://localhost:18081/acls";
@@ -68,7 +68,7 @@ public class IntegrationTest {
 		slave2.start();
 
 		// efetua a chamada
-		String result = Request.Get("http://localhost:18081/update-notify").connectTimeout(1000).socketTimeout(1000).execute().returnContent().asString();
+		String result = Request.Post("http://localhost:18081/update-notify").bodyString("", ContentType.APPLICATION_JSON).connectTimeout(1000).socketTimeout(1000).execute().returnContent().asString();
 
 		assertThat(result, is("ok"));
 
@@ -91,7 +91,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaGerenciarAsAclsViaApi() throws Exception {
 
-		AtlasMaster master = new AtlasMaster(zk,"localhost:19000", "localhost", 18081);
+		AtlasMaster master = new AtlasMaster(zk,"localhost:19000", "localhost", 18081,"http://localhost:18081/update-notify");
 		master.start();
 
 		

@@ -15,7 +15,9 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.x.discovery.ServiceDiscovery;
 import org.apache.curator.x.discovery.ServiceDiscoveryBuilder;
 import org.apache.curator.x.discovery.ServiceInstance;
+import org.apache.http.HttpVersion;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.entity.ContentType;
 
 import br.com.aexo.atlas.commons.ExecScriptRouter;
 
@@ -36,13 +38,15 @@ public class AtlasMaster {
 	private String hostname;
 	private Integer port;
 	private ExecutorService pool = Executors.newCachedThreadPool();
+	private String callback;
 			
 
-	public AtlasMaster(String zk,String marathonUrl, String hostname, Integer port) throws Exception {
+	public AtlasMaster(String zk,String marathonUrl, String hostname, Integer port, String callback) throws Exception {
 
 		this.marathonUrl = marathonUrl;
 		this.hostname = hostname;
 		this.port = port;
+		this.callback = callback;
 		
 		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
@@ -61,7 +65,7 @@ public class AtlasMaster {
 
 		// create routes camel from master
 		context = new DefaultCamelContext();
-		context.addRoutes(new ReceiveUpdateMarathonTasksRouter(client, hostname, port));
+		context.addRoutes(new ReceiveUpdateMarathonTasksRouter( hostname, port));
 		context.addRoutes(new NotifySlavesRouter(client));
 		context.addRoutes(new NotifySlaveRouter(leader));
 		context.addRoutes(new ACLResourceRouter(hostname, port));
@@ -84,8 +88,9 @@ public class AtlasMaster {
 		String marathonUrl = args[1];
 		String hostname = args[2];
 		Integer port = Integer.parseInt(args[3]);
-
-		new AtlasMaster(zk, marathonUrl, hostname, port).start();
+		String callback = args[4];
+		
+		new AtlasMaster(zk, marathonUrl, hostname, port,callback).start();
 	}
 
 	/**
@@ -94,7 +99,18 @@ public class AtlasMaster {
 	 * @throws Exception
 	 */
 	public void start() throws Exception {
-
+		context.start();
+		service.start();
+		
+		
+		// registry callback in marathon
+		Request.Post("http://"
+				.concat(marathonUrl)
+				.concat("/v2/eventSubscriptions?callbackUrl=")
+				.concat(callback)
+		).version(HttpVersion.HTTP_1_1).bodyString("", ContentType.APPLICATION_JSON).execute();
+		
+		
 		pool.submit(new Runnable() {
 			@Override
 			public void run() {
@@ -105,20 +121,6 @@ public class AtlasMaster {
 				}
 			}
 		});
-		
-		context.start();
-		service.start();
-		
-		
-		// registry callback in marathon
-		Request.Post("http://"
-				.concat(marathonUrl)
-				.concat("/v2/eventSubscriptions?callbackUrl=http://")
-				.concat(hostname)
-				.concat(":")
-				.concat(port.toString())
-				.concat("/update-notify")
-		).execute();
 				
 	}
 
