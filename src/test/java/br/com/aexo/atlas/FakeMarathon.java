@@ -10,6 +10,7 @@ public class FakeMarathon extends RouteBuilder {
 
 	private final String hostname;
 	private final Integer port;
+	private CamelContext context;
 
 	public FakeMarathon(String hostname, Integer port) {
 		super();
@@ -18,7 +19,7 @@ public class FakeMarathon extends RouteBuilder {
 	}
 
 	public void start() throws Exception {
-		CamelContext context = new DefaultCamelContext();
+		context = new DefaultCamelContext();
 		context.addRoutes(this);
 		context.start();
 	}
@@ -58,6 +59,10 @@ public class FakeMarathon extends RouteBuilder {
 			}
 		});
 
+	}
+
+	public void stop() throws Exception {
+		context.stop();
 	}
 
 }

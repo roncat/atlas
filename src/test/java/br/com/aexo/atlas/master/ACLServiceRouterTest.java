@@ -45,15 +45,16 @@ public class ACLServiceRouterTest extends CamelTestSupport {
 	
 	@Test
 	public void shouldBeSaveACLResource() throws Exception {
+		String acl = "{\"appId\":\"/app/app-1\",\"acl\":\"path_beg teste\"}";
 		Exchange message = context.createProducerTemplate().request("direct:saveAcl", new Processor() {
 			
 			@Override
 			public void process(Exchange exchange) throws Exception {
-				exchange.getOut().setBody("{\"appId\":\"/app/app-1\",\"acl\":\"path_beg teste\"}");
+				exchange.getOut().setBody(acl);
 				exchange.getOut().setHeader("content-type", "application/json; charset=UTF-8");
 			}
 		});
-		assertThat(message.getIn().getBody(),is("OK"));
+		assertThat(message.getIn().getBody(),is(acl));
 	}
 
 	@Test

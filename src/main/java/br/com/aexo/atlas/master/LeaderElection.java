@@ -37,7 +37,6 @@ public class LeaderElection extends LeaderSelectorListenerAdapter implements Clo
 
 	@Override
 	public void takeLeadership(CuratorFramework client) throws Exception {
-		System.out.println("take leader now");
 		setLeader(true);
 		try {
 			while (true) {

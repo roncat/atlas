@@ -95,7 +95,7 @@ public class AtlasMaster {
 	 */
 	public void start() throws Exception {
 
-		new Thread(new Runnable() {
+		pool.submit(new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -104,7 +104,7 @@ public class AtlasMaster {
 					throw new RuntimeException(e);
 				}
 			}
-		}).run();
+		});
 		
 		context.start();
 		service.start();
