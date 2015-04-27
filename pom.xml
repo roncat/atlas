@@ -16,12 +16,12 @@
         <repository>
             <id>fakerepo</id>
             <name>Local file system</name>
-            <url>file:///target</url>
+            <url>file://target</url>
         </repository>
         <snapshotRepository>
             <id>fakesnapshotrepo</id>
             <name>Local file system</name>
-            <url>file:///target</url>
+            <url>file://target</url>
         </snapshotRepository>
     </distributionManagement>
 	<build>
