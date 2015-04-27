@@ -7,10 +7,23 @@
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-		<tag>0.7</tag>
+		<tag>HEAD</tag>
 	</scm>
 
 
+
+    <distributionManagement>
+        <repository>
+            <id>fakerepo</id>
+            <name>Local file system</name>
+            <url>file:///target</url>
+        </repository>
+        <snapshotRepository>
+            <id>fakesnapshotrepo</id>
+            <name>Local file system</name>
+            <url>file:///target</url>
+        </snapshotRepository>
+    </distributionManagement>
 	<build>
 		<plugins>
 			<plugin>
