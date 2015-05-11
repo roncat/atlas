@@ -94,7 +94,7 @@
 						<artifactId>maven-assembly-plugin</artifactId>
 						<version>2.5.3</version>
 						<configuration>
-							<outputDirectory>${basedir}/dist</outputDirectory>
+							<outputDirectory>../../dist</outputDirectory>
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
