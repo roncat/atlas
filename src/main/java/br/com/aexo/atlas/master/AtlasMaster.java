@@ -35,20 +35,16 @@ public class AtlasMaster {
 	private ServiceDiscovery<Object> service;
 	private LeaderElection leader;
 	private String marathonUrl;
-	private String hostname;
-	private Integer port;
 	private ExecutorService pool = Executors.newCachedThreadPool();
 	private String callback;
 			
 
-	public AtlasMaster(String zk,String marathonUrl, String hostname, Integer port, String callback) throws Exception {
+	public AtlasMaster(String zk,String namespace,String marathonUrl, String hostname, Integer port, String callback) throws Exception {
 
 		this.marathonUrl = marathonUrl;
-		this.hostname = hostname;
-		this.port = port;
 		this.callback = callback;
 		
-		CuratorFramework client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+		CuratorFramework client = CuratorFrameworkFactory.builder().namespace(namespace).connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
 
 		// create path to acls does not exists
@@ -84,13 +80,15 @@ public class AtlasMaster {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String zk = args[0];
-		String marathonUrl = args[1];
-		String hostname = args[2];
-		Integer port = Integer.parseInt(args[3]);
-		String callback = args[4];
 		
-		new AtlasMaster(zk, marathonUrl, hostname, port,callback).start();
+		String zk = System.getenv("ZK");
+		String namespace = System.getenv("NAMESPACE");
+		String marathonUrl = System.getenv("MARATHON_URL");
+		String hostname = System.getenv("HOSTNAME");
+		Integer port = Integer.getInteger(System.getenv("PORT"));
+		String callback = System.getenv("CALLBACK");
+		
+		new AtlasMaster(zk, namespace, marathonUrl, hostname, port,callback).start();
 	}
 
 	/**

@@ -17,9 +17,9 @@ public class AtlasSlave {
 	private CuratorFramework client;
 	private ServiceDiscovery<Object> service;
 
-	public AtlasSlave(String zk, String marathonUrl, String hostname, Integer port, String fileDest, String command) throws Exception {
+	public AtlasSlave(String zk, String namespace, String marathonUrl, String hostname, Integer port, String fileDest, String command) throws Exception {
 		
-		client = CuratorFrameworkFactory.builder().namespace("atlas").connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+		client = CuratorFrameworkFactory.builder().namespace(namespace).connectString(zk).retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
 		client.start();
 		
 		context = new DefaultCamelContext();
@@ -32,14 +32,15 @@ public class AtlasSlave {
 
 	public static void main(String[] args) throws Exception {
 
-		String zk = args[0];
-		String marathonUrl = args[1];
-		String hostname = args[2];
-		Integer port = Integer.parseInt(args[3]);
-
-		String fileDest = args[4];
-		String command = args[5];
-		new AtlasSlave(zk, marathonUrl, hostname, port, fileDest, command).start();
+		String zk = System.getenv("ZK");
+		String namespace = System.getenv("NAMESPACE");
+		String marathonUrl = System.getenv("MARATHON_URL");
+		String hostname = System.getenv("HOSTNAME");
+		Integer port = Integer.getInteger(System.getenv("PORT"));
+		
+		String fileDest = System.getenv("CONF_BALANCER_DEST");
+		String command = System.getenv("COMMAND");
+		new AtlasSlave(zk, namespace, marathonUrl, hostname, port, fileDest, command).start();
 
 	}
 

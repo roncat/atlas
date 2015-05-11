@@ -50,7 +50,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaComunicarUmaAtualizacaoDeStatus() throws Exception {
 		new File("target/tmp").delete();
-		AtlasMaster master = new AtlasMaster(zk, "localhost:19000","localhost", 18081,"http://localhost:18081/update-notify");
+		AtlasMaster master = new AtlasMaster(zk,"atlas", "localhost:19000","localhost", 18081,"http://localhost:18081/update-notify");
 		master.start();
 
 		String aclsURI = "http://localhost:18081/acls";
@@ -61,10 +61,10 @@ public class IntegrationTest {
 
 		assertThat(salva, is(acl));
 
-		AtlasSlave slave1 = new AtlasSlave(zk, "localhost:19000", "localhost", 18082, "target/tmp/?fileName=haproxy1.cfg", "touch?args=target/tmp/ha1");
+		AtlasSlave slave1 = new AtlasSlave(zk, "atlas","localhost:19000", "localhost", 18082, "target/tmp/?fileName=haproxy1.cfg", "touch?args=target/tmp/ha1");
 		slave1.start();
 
-		AtlasSlave slave2 = new AtlasSlave(zk, "localhost:19000", "localhost", 18083, "target/tmp/?fileName=haproxy2.cfg", "touch?args=target/tmp/ha2");
+		AtlasSlave slave2 = new AtlasSlave(zk, "atlas","localhost:19000", "localhost", 18083, "target/tmp/?fileName=haproxy2.cfg", "touch?args=target/tmp/ha2");
 		slave2.start();
 
 		// efetua a chamada
@@ -91,7 +91,7 @@ public class IntegrationTest {
 	@Test
 	public void deveriaGerenciarAsAclsViaApi() throws Exception {
 
-		AtlasMaster master = new AtlasMaster(zk,"localhost:19000", "localhost", 18081,"http://localhost:18081/update-notify");
+		AtlasMaster master = new AtlasMaster(zk,"atlas","localhost:19000", "localhost", 18081,"http://localhost:18081/update-notify");
 		master.start();
 
 		
