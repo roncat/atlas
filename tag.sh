@@ -1,8 +1,8 @@
 #!/bin/sh
-
-origem=$1
  
-if [ $origem == "master" ]
+origem=$(git rev-parse --abbrev-ref HEAD)
+ 
+if [ $origem == "master" ] 
 then
     # processo executado para suportar release branch, executando o fluxo gerando a partir do trunk
   
@@ -21,7 +21,10 @@ then
     
     mvn release:branch  -DbranchName=$MAJOR.$MINOR -Dproject.rel.$GROUP_ID:$ARTIFACT_ID=$MAJOR.$MINOR.$BUGFIX  -Dproject.dev.$GROUP_ID:$ARTIFACT_ID=$MAJOR.$NEW_MINOR.$BUGFIX
 
-
+	if [ $? -ne 0 ]; then
+	    exit 2; 
+	fi
+	 
     git checkout $MAJOR.$MINOR
 else
     # processo executado para suportar release branch, executando o fluxo gerando a partir da release 
