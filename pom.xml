@@ -59,6 +59,7 @@
 				<configuration>
 					<preparationGoals>org.apache.maven.plugins:maven-antrun-plugin:run</preparationGoals>
 					<releaseProfiles>generateDistribution</releaseProfiles>
+					<commitByProject>true</commitByProject>
 				</configuration>
 				<dependencies>
 					<dependency>
