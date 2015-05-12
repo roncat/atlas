@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aexo</groupId>
 	<artifactId>atlas</artifactId>
@@ -8,7 +7,7 @@
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-		<tag>HEAD</tag>
+		<tag>0.19</tag>
 	</scm>
 
 	<properties>
@@ -82,7 +81,7 @@
 						<artifactId>replacer</artifactId>
 						<version>1.5.3</version>
 						<configuration>
-							<outputDir></outputDir>
+							<outputDir />
 							<file>${basedir}/dockerfiles/master/Dockerfile.tmpl</file>
 							<outputFile>${basedir}/dockerfiles/master/Dockerfile</outputFile>
 							<replacements>
@@ -99,7 +98,7 @@
 						<artifactId>replacer</artifactId>
 						<version>1.5.3</version>
 						<configuration>
-							<outputDir></outputDir>
+							<outputDir />
 							<file>${basedir}/dockerfiles/slave/Dockerfile.tmpl</file>
 							<outputFile>${basedir}/dockerfiles/slave/Dockerfile</outputFile>
 							<replacements>
