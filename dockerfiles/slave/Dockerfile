@@ -28,7 +28,7 @@ RUN mkdir /atlas
 
 WORKDIR /atlas
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.22.0-SNAPSHOT/atlas-bin.zip /atlas/atlas.zip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-dsfbin.zip /atlas/atlas.zip
 
 RUN unzip atlas.zip
 WORDIR /atlas/atlas

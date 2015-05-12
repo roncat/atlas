@@ -26,9 +26,9 @@ RUN mkdir /atlas
 
 WORKDIR /atlas
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.22.0-SNAPSHOT/atlas-bin.zip /atlas/atlas.zip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-asdf/atlas-bin.zip /atlas/atlas.zip
 
-RUN unzip atlas.zip
+RUN unzip atlas.zipasdf
 WORDIR /atlas/atlas
 
 ENTRYPOINT java

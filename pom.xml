@@ -83,10 +83,10 @@
 						<version>1.7</version>
 						<configuration>
 							<target name="generate dockerfiles from current version">
-								<copy file="${basedir}/dockerfiles/master/Dockerfile.tmpl" overwrite="true" tofile="${basedir}/dockerfiles/master/Dockerfile" />
-								<copy file="${basedir}/dockerfiles/slave/Dockerfile.tmpl" overwrite="true" tofile="${basedir}/dockerfiles/slave/Dockerfile" />
+								<copy file="${basedir}/dockerfiles/master/Dockerfile.tmpl" overwrite="true" verbose="true" tofile="${basedir}/dockerfiles/master/Dockerfile" />
+								<copy file="${basedir}/dockerfiles/slave/Dockerfile.tmpl" overwrite="true" verbose="true" tofile="${basedir}/dockerfiles/slave/Dockerfile" />
 
-								<replace token="@@VERSION@@" value="${project.version}" dir="${basedir}/dockerfiles/">
+								<replace token="@@VERSION@@" value="${project.version}" dir="${basedir}/dockerfiles/" >
 									<include name="**/Dockerfile" />
 								</replace>
 								<replace token="-SNAPSHOT" value="" dir="${basedir}/dockerfiles/">
