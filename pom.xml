@@ -57,6 +57,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.4.2</version>
 				<configuration>
+				<preparationGoals>replace</preparationGoals>
 					<releaseProfiles>generateDistribution</releaseProfiles>
 				</configuration>
 				<dependencies>
@@ -98,7 +99,6 @@
 						<artifactId>replacer</artifactId>
 						<version>1.5.3</version>
 						<configuration>
-							<outputDir />
 							<file>${basedir}/dockerfiles/slave/Dockerfile.tmpl</file>
 							<outputFile>${basedir}/dockerfiles/slave/Dockerfile</outputFile>
 							<replacements>
