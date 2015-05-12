@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aexo</groupId>
 	<artifactId>atlas</artifactId>
@@ -8,7 +7,7 @@
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-		<tag>HEAD</tag>
+		<tag>0.27</tag>
 	</scm>
 
 	<properties>
@@ -136,13 +135,10 @@
 				<version>1.7</version>
 				<configuration>
 					<target name="generate dockerfiles from current version">
-						<copy file="${basedir}/dockerfiles/master/Dockerfile.tmpl"
-							overwrite="true" tofile="${basedir}/dockerfiles/master/Dockerfile" />
-						<copy file="${basedir}/dockerfiles/slave/Dockerfile.tmpl"
-							overwrite="true" tofile="${basedir}/dockerfiles/slave/Dockerfile" />
+						<copy file="${basedir}/dockerfiles/master/Dockerfile.tmpl" overwrite="true" tofile="${basedir}/dockerfiles/master/Dockerfile" />
+						<copy file="${basedir}/dockerfiles/slave/Dockerfile.tmpl" overwrite="true" tofile="${basedir}/dockerfiles/slave/Dockerfile" />
 
-						<replace token="@@VERSION@@" value="${project.version}"
-							dir="${basedir}/dockerfiles/">
+						<replace token="@@VERSION@@" value="${project.version}" dir="${basedir}/dockerfiles/">
 							<include name="**/Dockerfile" />
 						</replace>
 						<replace token="-SNAPSHOT" value="" dir="${basedir}/dockerfiles/">
