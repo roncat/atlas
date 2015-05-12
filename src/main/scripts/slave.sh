@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./atlas.conf
+
 if [ -z "${ZK}" ]; then
       echo "env var ZK is not defined"
     exit 1;

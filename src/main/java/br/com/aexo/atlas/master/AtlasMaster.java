@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.camel.CamelContext;
 import org.apache.camel.impl.DefaultCamelContext;
+import org.apache.commons.io.IOUtils;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -52,9 +53,8 @@ public class AtlasMaster {
 			client.create().forPath("/acls");
 		}
 		
-		if (client.checkExists().forPath("/template") == null) {
-			Path path = Paths.get(getClass().getClassLoader().getResource("scriptdefault.cfg").toURI());
-			client.create().forPath("/template",Files.readAllBytes(path));
+		if (client.checkExists().forPath("/template") == null){
+			client.create().forPath("/template",IOUtils.toByteArray( getClass().getClassLoader().getResourceAsStream("scriptdefault.cfg")));
 		}
 		
 		leader = new LeaderElection(client);
