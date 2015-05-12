@@ -2,12 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aexo</groupId>
 	<artifactId>atlas</artifactId>
-	<version>0.23.1-SNAPSHOT</version>
+	<version>0.23.1</version>
 	<scm>
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-		<tag>0.23</tag>
+		<tag>atlas-0.23.1</tag>
 	</scm>
 
 	<properties>
@@ -86,7 +86,7 @@
 								<copy file="${basedir}/dockerfiles/master/Dockerfile.tmpl" overwrite="true" verbose="true" tofile="${basedir}/dockerfiles/master/Dockerfile" />
 								<copy file="${basedir}/dockerfiles/slave/Dockerfile.tmpl" overwrite="true" verbose="true" tofile="${basedir}/dockerfiles/slave/Dockerfile" />
 
-								<replace token="@@VERSION@@" value="${project.version}" dir="${basedir}/dockerfiles/" >
+								<replace token="@@VERSION@@" value="${project.version}" dir="${basedir}/dockerfiles/">
 									<include name="**/Dockerfile" />
 								</replace>
 								<replace token="-SNAPSHOT" value="" dir="${basedir}/dockerfiles/">
