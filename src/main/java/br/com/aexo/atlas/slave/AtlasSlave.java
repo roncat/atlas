@@ -36,7 +36,7 @@ public class AtlasSlave {
 		String namespace = System.getenv("NAMESPACE");
 		String marathonUrl = System.getenv("MARATHON_URL");
 		String hostname = System.getenv("HOSTNAME");
-		Integer port = Integer.getInteger(System.getenv("PORT"));
+		Integer port = Integer.parseInt(System.getenv("PORT"));
 		
 		String fileDest = System.getenv("CONF_BALANCER_DEST");
 		String command = System.getenv("COMMAND");

@@ -85,7 +85,7 @@ public class AtlasMaster {
 		String namespace = System.getenv("NAMESPACE");
 		String marathonUrl = System.getenv("MARATHON_URL");
 		String hostname = System.getenv("HOSTNAME");
-		Integer port = Integer.getInteger(System.getenv("PORT"));
+		Integer port = Integer.parseInt(System.getenv("PORT"));
 		String callback = System.getenv("CALLBACK");
 		
 		new AtlasMaster(zk, namespace, marathonUrl, hostname, port,callback).start();

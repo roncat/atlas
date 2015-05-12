@@ -2,7 +2,7 @@ FROM debian:jessie
 
 MAINTAINER AEXO TI - <carlos.alberto@aexo.com.br>
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -yq ha-proxy
+RUN apt-get update && apt-get -y upgrade 
 
 RUN \
     echo "===> add webupd8 repository..."  && \
@@ -23,7 +23,9 @@ ENV PORT 3500
 
 RUN mkdir /atlas
 
-ADD ../../pom.xml /atlas/pom.xml
+ADD ../../pom.xml /atlas/
 ADD start.sh /atlas/start.sh
+
+RUN apt-get install -y libxml2-utils curl unzip
 
 ENTRYPOINT /atlas/start.sh
