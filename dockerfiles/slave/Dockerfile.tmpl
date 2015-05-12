@@ -26,7 +26,12 @@ ENV COMMAND "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/
 
 RUN mkdir /atlas
 
-ADD ../../pom.xml /atlas/pom.xml
-ADD start.sh /atlas/start.sh
+WORKDIR /atlas
 
-ENTRYPOINT /atlas/start.sh
+ADD https://github.com/aexoti/atlas/releases/download/atlas-@@VERSION@@/atlas-bin.zip /atlas/atlas.zip
+
+RUN unzip atlas.zip
+WORDIR /atlas/atlas
+
+ENTRYPOINT java
+CMD ["-cp", "atlas.jar","br.com.aexo.atlas.slave.AtlasAlave"]
