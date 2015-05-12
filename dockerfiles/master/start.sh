@@ -11,4 +11,4 @@ else
    unzip /atlas/atlas.zip
 fi
 
-sh /atlas/atlas/slave.sh
+sh /atlas/atlas/master.sh

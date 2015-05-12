@@ -17,15 +17,13 @@ RUN echo "===> install Java"  && \
     echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections  && \
     DEBIAN_FRONTEND=noninteractive  apt-get install -y --force-yes oracle-java8-installer oracle-java8-set-default
 
-
-ENV TYPE server
 ENV NAMESPACE atlas
 ENV HOSTNAME 0.0.0.0
-ENV MASTER_PORT 3500
-ENV SLAVE_PORT 3501
-ENV CALLBACK ""
+ENV PORT 3500
 
-ENV CONF_BALANCER_DEST /etc/haproxy/haproxy.cfg
-ENV COMMAND "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)"
+RUN mkdir /atlas
 
-ENTRYPOINT start.sh
+ADD ../../pom.xml /atlas/pom.xml
+ADD start.sh /atlas/start.sh
+
+ENTRYPOINT /atlas/start.sh
