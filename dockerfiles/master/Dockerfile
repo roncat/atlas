@@ -26,10 +26,10 @@ RUN mkdir /atlas
 
 WORKDIR /atlas
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.22.0-SNAPSHOT/atlas-bin.zip /atlas/atlas.zip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-0.27.0/atlas-bin.zip /atlas/atlas.zip
 
 RUN unzip atlas.zip
-WORDIR /atlas/atlas
+WORKDIR /atlas/atlas
 
 ENTRYPOINT java
 CMD ["-cp", "atlas.jar","br.com.aexo.atlas.master.AtlasMaster"]
