@@ -1,5 +1,6 @@
 package br.com.aexo.atlas.master;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,12 +21,8 @@ import org.apache.curator.framework.CuratorFramework;
 public class ACLServiceRouter extends RouteBuilder {
 
 	private CuratorFramework client;
-	private String host;
-	private Integer port;
 
-	public ACLServiceRouter(String host, Integer port, CuratorFramework client) {
-		this.host = host;
-		this.port = port;
+	public ACLServiceRouter(CuratorFramework client) {
 		this.client = client;
 	}
 
@@ -71,7 +68,8 @@ public class ACLServiceRouter extends RouteBuilder {
 			@Override
 			public void process(Exchange exchange) throws Exception {
 				String url = exchange.getIn().getHeader("CamelHttpUri").toString();
-				exchange.getOut().setHeader("content", url.split(host + ":" + port + "/acls")[1]);
+				URL e = new URL(url);
+				exchange.getOut().setHeader("content", url.split(e.getHost() + ":" +e.getPort()  + "/acls")[1]);
 			}
 		}).transform().constant(client).transform()
 				.javaScript("var client = body; appId = '/acls/'+encodeURIComponent(headers.content); if ( client.checkExists().forPath(appId)!=null) { client.delete().forPath(appId); }").transform()

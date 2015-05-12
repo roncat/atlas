@@ -2,7 +2,8 @@ FROM debian:jessie
 
 MAINTAINER AEXO TI - <carlos.alberto@aexo.com.br>
 
-RUN apt-get update && apt-get -y upgrade 
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y unzip
 
 RUN \
     echo "===> add webupd8 repository..."  && \
@@ -23,9 +24,12 @@ ENV PORT 3500
 
 RUN mkdir /atlas
 
-ADD ../../pom.xml /atlas/
-ADD start.sh /atlas/start.sh
+WORKDIR /atlas
 
-RUN apt-get install -y libxml2-utils curl unzip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-@@VERSION@@/atlas-bin.zip /atlas/atlas.zip
 
-ENTRYPOINT /atlas/start.sh
+RUN unzip atlas.zip
+WORDIR /atlas/atlas
+
+ENTRYPOINT java
+CMD ["-cp", "atlas.jar","br.com.aexo.atlas.master.AtlasMaster"]

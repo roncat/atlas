@@ -65,7 +65,7 @@ public class AtlasMaster {
 		context.addRoutes(new NotifySlavesRouter(client));
 		context.addRoutes(new NotifySlaveRouter(leader));
 		context.addRoutes(new ACLResourceRouter(hostname, port));
-		context.addRoutes(new ACLServiceRouter(hostname, port, client));
+		context.addRoutes(new ACLServiceRouter(client));
 		context.addRoutes(new TemplateResourceRouter(hostname, port));
 		context.addRoutes(new TemplateServiceRouter(client));
 		context.addRoutes(new UIAtlasMasterRouter(hostname,port));

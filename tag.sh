@@ -34,4 +34,4 @@ else
 fi
 
 
-mvn release:prepare release:perform -Dmaven.test.skip=true
+mvn -B release:prepare release:perform -Dmaven.test.skip=true

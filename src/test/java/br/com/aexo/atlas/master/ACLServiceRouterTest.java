@@ -33,7 +33,7 @@ public class ACLServiceRouterTest extends CamelTestSupport {
 		Integer port = 31280;
 		url = "http://" + hostname + ":" + port + "/acls";
 
-		return new ACLServiceRouter(hostname, port, client);
+		return new ACLServiceRouter(client);
 	}
 
 	@Test

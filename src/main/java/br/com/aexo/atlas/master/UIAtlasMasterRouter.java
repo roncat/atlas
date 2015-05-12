@@ -1,6 +1,6 @@
 package br.com.aexo.atlas.master;
 
-import java.io.File;
+import java.net.URL;
 
 import javax.activation.MimetypesFileTypeMap;
 
@@ -35,18 +35,20 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 			public void process(Exchange exchange) throws Exception {
 				Message msg = exchange.getOut();
 				String url = exchange.getIn().getHeader("CamelHttpUri").toString();
+				
+				URL e = new URL(url);
+				
 
-				if (!url.startsWith("http://" + hostname + ":" + port + "/ui/")) {
+				if (!url.startsWith("http://" + e.getHost() + ":" + e.getPort() + "/ui/")) {
 					Response response = exchange.getIn().getHeader(RestletConstants.RESTLET_RESPONSE, Response.class);
 
-					response.setLocationRef("http://" + hostname + ":" + port + "/ui/");
+					response.setLocationRef("http://" + e.getHost() + ":" + e.getPort() + "/ui/");
 
 					exchange.getOut().setHeader(Exchange.HTTP_RESPONSE_CODE, 302);
-//					exchange.getOut().setHeader("location", "http://" + hostname + ":" + port + "/ui/");
 					return;
 				}
 
-				String[] split = url.split(hostname + ":" + port + "/ui/");
+				String[] split = url.split(e.getHost() + ":" + e.getPort() + "/ui/");
 				String relativePath = split.length == 2 ? split[1] : "";
 
 				if (relativePath.isEmpty()) {
@@ -59,14 +61,10 @@ public class UIAtlasMasterRouter extends RouteBuilder {
 				String mimeType = map.getContentType(pathStr);
 
 				try {
-					if (!new File(getClass().getClassLoader().getResource(pathStr).toURI()).exists()) {
-						throw new RuntimeException("not found");
-					}
-
 					msg.setBody(getClass().getClassLoader().getResourceAsStream(pathStr));
 					msg.setHeader(Exchange.CONTENT_TYPE, mimeType);
 					msg.setHeader(Exchange.HTTP_RESPONSE_CODE, "200");
-				} catch (Exception e) {
+				} catch (Exception xe) {
 					msg.setBody(relativePath + " not found.");
 					msg.setHeader(Exchange.HTTP_RESPONSE_CODE, "404");
 				}
