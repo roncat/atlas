@@ -7,7 +7,7 @@
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-		<tag>HEAD</tag>
+		<tag>0.16</tag>
 	</scm>
 
 	<properties>
