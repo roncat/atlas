@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aexo</groupId>
 	<artifactId>atlas</artifactId>
@@ -57,7 +58,7 @@
 				<artifactId>maven-release-plugin</artifactId>
 				<version>2.4.2</version>
 				<configuration>
-				<preparationGoals>replace</preparationGoals>
+					<preparationGoals>com.google.code.maven-replacer-plugin:replacer:replace</preparationGoals>
 					<releaseProfiles>generateDistribution</releaseProfiles>
 				</configuration>
 				<dependencies>
@@ -82,33 +83,17 @@
 						<artifactId>replacer</artifactId>
 						<version>1.5.3</version>
 						<configuration>
-							<outputDir />
-							<file>${basedir}/dockerfiles/master/Dockerfile.tmpl</file>
-							<outputFile>${basedir}/dockerfiles/master/Dockerfile</outputFile>
+							<filesToInclude>
+								${basedir}/dockerfilestmpl/*/Dockerfile
+							</filesToInclude>
+							<outputDir>${basedir}/dockerfiles</outputDir>
 							<replacements>
 								<replacement>
-									<token>$VERSION</token>
+									<token>@@VERSION@@</token>
 									<value>${project.version}</value>
 								</replacement>
 							</replacements>
 						</configuration>
-
-					</plugin>
-					<plugin>
-						<groupId>com.google.code.maven-replacer-plugin</groupId>
-						<artifactId>replacer</artifactId>
-						<version>1.5.3</version>
-						<configuration>
-							<file>${basedir}/dockerfiles/slave/Dockerfile.tmpl</file>
-							<outputFile>${basedir}/dockerfiles/slave/Dockerfile</outputFile>
-							<replacements>
-								<replacement>
-									<token>$VERSION</token>
-									<value>${project.version}</value>
-								</replacement>
-							</replacements>
-						</configuration>
-
 					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
