@@ -1,8 +1,9 @@
-FROM debian:jessie
+FROM haproxy:1.5.12
 
 MAINTAINER AEXO TI - <carlos.alberto@aexo.com.br>
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -yq ha-proxy
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y unzip
 
 RUN \
     echo "===> add webupd8 repository..."  && \
@@ -21,17 +22,24 @@ ENV NAMESPACE atlas
 ENV HOSTNAME 0.0.0.0
 ENV PORT 3501
 
-ENV CONF_BALANCER_DEST "/etc/haproxy/haproxy.cfg"
-ENV COMMAND "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)"
+ENV CONF_BALANCER_DEST /etc/haproxy?fileName=haproxy.cfg
+ENV COMMAND /atlas/reload 
+
 
 RUN mkdir /atlas
 
 WORKDIR /atlas
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.27.0/atlas-bin.zip /atlas/atlas.zip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-0.29.0/atlas-bin.zip /atlas/atlas.zip
 
 RUN unzip atlas.zip
 WORKDIR /atlas/atlas
 
-ENTRYPOINT java
-CMD ["-cp", "atlas.jar","br.com.aexo.atlas.slave.AtlasAlave"]
+aDD start.sh /atlas/start.sh
+ADD reload /atlas/reload
+RUN ln -s /usr/local/etc/haproxy /etc/haproxy
+RUN mkdir /var/lib/haproxy -p 
+RUN mkdir /var/log/haproxy -p
+ADD haproxy.cfg /etc/haproxy/haproxy.cfg
+
+CMD /atlas/start.sh
