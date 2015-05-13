@@ -30,13 +30,17 @@ RUN mkdir /atlas
 
 WORKDIR /atlas
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.29.0/atlas-bin.zip /atlas/atlas.zip
+ADD https://github.com/aexoti/atlas/releases/download/atlas-0.29.1/atlas-bin.zip /atlas/atlas.zip
 
 RUN unzip atlas.zip
 WORKDIR /atlas/atlas
 
-aDD start.sh /atlas/start.sh
+ADD start.sh /atlas/start.sh
 ADD reload /atlas/reload
+
+RUN chmod +x /atlas/start.sh
+RUN chmod +x /atlas/reload
+
 RUN ln -s /usr/local/etc/haproxy /etc/haproxy
 RUN mkdir /var/lib/haproxy -p 
 RUN mkdir /var/log/haproxy -p
