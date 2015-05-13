@@ -4,7 +4,10 @@
 	<div class="col-md-3">Marathon App</div>
 	<div class="col-md-3">ACL</div>
 	<div class="col-md-3">Instances</div>
-	<div class="col-md-3 atlas-list-opts pull-right" ><button  type="button" ng-click="refresh()" class="glyphicon glyphicon-refresh btn btn-default"></button></div>
+	<div class="col-md-3 atlas-list-opts pull-right" >
+	<button  type="button" ng-click="refresh()" class="glyphicon glyphicon-refresh btn btn-default" alt="update list"></button>
+	<button  type="button" ng-click="applyConfiguration()" class="glyphicon glyphicon-import btn btn-default" alt="apply configuration"></button>
+	</div>
 </div>
 <div ng-repeat="rule in rules">
 	<div class="row  atlas-list-line" ng-class="{

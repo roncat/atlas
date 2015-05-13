@@ -54,6 +54,18 @@ define([ './controllers', 'jquery' ], function(controllers, $) {
 				$scope.$safeApply();
 			});
 		}
+		
+		$scope.applyConfiguration = function(){
+			$.ajax({
+				url : "/update-notify",
+				type : "POST"
+			}).done(function() {
+				alert("'configuration applied");
+			})
+			.fail(function() {
+				alert("'fail to configuration apply");
+			});
+		}
 
 		$scope.refresh();
 	});
