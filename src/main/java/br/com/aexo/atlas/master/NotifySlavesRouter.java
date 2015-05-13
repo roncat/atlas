@@ -33,7 +33,15 @@ public class NotifySlavesRouter extends RouteBuilder {
 		from("seda:notify-slaves").process(new Processor() {
 			@Override
 			public void process(Exchange exchange) throws Exception {
+
+				exchange.getOut().setHeader("forceUpdate", false);
+
+				String url = exchange.getIn().getHeader("CamelHttpUri").toString();
+				if (url.contains("forceUpdate=true")) {
+					exchange.getOut().setHeader("forceUpdate", true);
+				}
 				Collection<ServiceInstance<Object>> instances = discovery.queryForInstances("slave");
+
 				exchange.getOut().setBody(instances);
 			}
 		}).split().body().to("seda:notify-slave");

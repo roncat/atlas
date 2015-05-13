@@ -24,7 +24,7 @@ public class NotifySlaveRouter extends RouteBuilder {
 		from("seda:notify-slave").process(new Processor() {
 			public void process(Exchange exchange) throws Exception {
 
-				if (!leader.isLeader()){
+				if (!leader.isLeader() && !exchange.getIn().getHeader("forceUpdate",Boolean.class)){
 					return;
 				}
 				

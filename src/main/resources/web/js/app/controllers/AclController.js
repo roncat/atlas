@@ -57,7 +57,7 @@ define([ './controllers', 'jquery' ], function(controllers, $) {
 		
 		$scope.applyConfiguration = function(){
 			$.ajax({
-				url : "/update-notify",
+				url : "/update-notify?forceUpdate=true",
 				type : "POST"
 			}).done(function() {
 				alert("'configuration applied");
