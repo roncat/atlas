@@ -13,6 +13,9 @@ master - responsável por prover a interface web administrativa, monitorar o mar
 
 No monitoramento, deve ser feita a eleição de um lider, entre os masters, e apenas o master lida com o marathon obtendo informações e enviando para o slave.
 
+usando via docker
 
+docker run -e ZK="zookeeper hosts" -e MARATHON_URL="host:port"  -e PORT="service port" -e HOSTNAME="ip to host"  -e CALLBACK="http://ip do host:port/update-notify" --net=host aexoti/atlas-master:<version>
 
+docker run -e ZK="zookeeper hosts" -e PORT="service this port" --net=host -e HOSTNAME="ip do host" -e MARATHON_URL="host:port"  -v /run:/run -v /dev:/dev aexoti/atlas-slave:<version>
 

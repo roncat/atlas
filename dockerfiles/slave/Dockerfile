@@ -21,7 +21,7 @@ ENV NAMESPACE atlas
 ENV HOSTNAME 0.0.0.0
 ENV PORT 3501
 
-ENV CONF_BALANCER_DEST /etc/haproxy/haproxy.cfg
+ENV CONF_BALANCER_DEST "/etc/haproxy/haproxy.cfg"
 ENV COMMAND "haproxy -f /etc/haproxy.cfg -p /var/run/haproxy.pid -sf $(cat /var/run/haproxy.pid)"
 
 RUN mkdir /atlas

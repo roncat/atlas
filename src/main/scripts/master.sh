@@ -1,6 +1,5 @@
 #!/bin/bash
 
-./atlas.conf
 
 
 if [ -z "${ZK}" ]; then
