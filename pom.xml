@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.aexo</groupId>
 	<artifactId>atlas</artifactId>
-	<version>0.29.4</version>
+	<version>0.29.5-SNAPSHOT</version>
 	<packaging>war</packaging>
 
 	<name>Atlas</name>
@@ -17,7 +17,7 @@
 		<connection>scm:git:git@github.com:aexoti/atlas.git</connection>
 		<developerConnection>scm:git:git@github.com:aexoti/atlas.git</developerConnection>
 		<url>scm:git:git@github.com:aexoti/atlas.git</url>
-	  <tag>atlas-0.29.4</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<distributionManagement>
