@@ -1,0 +1,104 @@
+<h3>ACL Rules</h3>
+
+<div class="row atlas-list-header atlas-list-line">
+	<div class="col-md-3">Marathon App</div>
+	<div class="col-md-3">ACL</div>
+	<div class="col-md-3">Instances</div>
+	<div class="col-md-3 atlas-list-opts pull-right" >
+	<button  type="button" ng-click="refresh()" class="glyphicon glyphicon-refresh btn btn-default" alt="update list"></button>
+	<button  type="button" ng-click="applyConfiguration()" class="glyphicon glyphicon-import btn btn-default" alt="apply configuration"></button>
+	</div>
+</div>
+<div ng-repeat="rule in rules">
+	<div class="row  atlas-list-line" ng-class="{
+		'atlas-list-mis-app': rule.discovery=='missing',
+		'atlas-list-active-app': rule.acl != ''
+		}">
+		<div class="col-md-3">{{rule.appId}}</div>
+		<div class="col-md-3">{{rule.acl}}</div>
+		<div class="col-md-3">{{rule.instances}}</div>
+		<div class="col-md-3 atlas-list-opts pull-right">
+			<span ng-show="rule.discovery =='missing'">Missing application </span> 
+			
+			<span ng-show="rule.discovery== 'missing'" data-toggle="modal" data-target="#removeRule" class="btn btn-danger glyphicon glyphicon-trash" ng-click="selectRule(rule)"></span>
+			
+			<span ng-show="rule.acl==''" data-toggle="modal" data-target="#edit" class="btn btn-success glyphicon glyphicon-plus" ng-click="selectRule(rule)"></span>
+			
+			<span ng-show="rule.acl!='' && rule.discovery!= 'missing' " data-toggle="modal" data-target="#edit" class="btn btn-primary glyphicon glyphicon-edit" ng-click="selectRule(rule)"></span> 
+			<span ng-show="rule.acl!='' && rule.discovery!= 'missing' " data-toggle="modal" data-target="#removeAcl" class="btn btn-danger glyphicon glyphicon-trash" ng-click="selectRule(rule)"></span>
+			
+		</div>
+	</div>
+</div>
+		
+		
+<div id="edit" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Service configuration</h4>
+      </div>
+      <div class="modal-body">
+	    <div class="inner-form">
+        <div class="form-group">
+            <label>Marathon ID</label>
+            <input ng-model="rule.appId" readonly="readonly" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>ACL</label>
+            <p class="help-block">
+                Enter HAProxy acl's criterion, flag and operator (<a target="_blank" href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html#7">acl documentation</a>), for example: <br>
+                DNS approach: <code>hdr(host) -i app.example.com</code> <br>
+                Path prefix: <code>path_beg -i /app-group/app1</code>
+            </p>
+            <div class="input-group">
+                <div class="input-group-addon">acl &lt;aclname&gt;</div>
+                	<input id="inputacl" ng-model="rule.acl" type="text" class="form-control" name="input"  placeholder="hdr(host) -i app.example.com" required="required">
+            	</div>
+        	</div>
+    	</div>
+	  </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" ng-click="confirmEditAcl()" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="removeRule" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirm remove rule?</h4>
+      </div>
+      <div class="modal-body">
+        <p>Marathon {{rule.appId}} does not found, confirm remove rule ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="confirmRemove()" class="btn btn-danger">Remove</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="removeAcl" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Confirm remove ACL?</h4>
+      </div>
+      <div class="modal-body">
+        <p>Marathon {{rule.appId}} is assigned from acl is {{rule.acl}}, confirm remove?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" ng-click="confirmRemove()" class="btn btn-danger">Remove</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

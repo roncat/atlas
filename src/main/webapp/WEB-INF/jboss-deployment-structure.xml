@@ -1,0 +1,12 @@
+<jboss-deployment-structure>
+  <deployment>
+  
+   <!-- remove json handlers and XML standards to exchange RESTEasy paragraph Library For the JAX -RS serializer  -->
+    <exclusions>
+      <module name="org.jboss.resteasy.resteasy-jackson-provider" />
+    </exclusions>
+    <dependencies>
+      <module name="org.jboss.resteasy.resteasy-jettison-provider" />
+    </dependencies>
+  </deployment>
+</jboss-deployment-structure>

@@ -1,0 +1,71 @@
+<h3>Template script</h3>
+
+<div class="row ">
+	<div class="col-md-6">
+		<div class="atlas-editor"
+			ui-ace="{
+       
+       	  require: ['ace/ext/language_tools'],
+		  advanced: {
+		      enableSnippets: true,
+		      enableBasicAutocompletion: true,
+		      enableLiveAutocompletion: true
+		  },
+          mode: 'javascript',
+          theme: 'tomorrow_night',
+          useWrapMode: true
+      }"
+			ng-model="script"></div>
+	</div>
+
+
+	<div class="col-md-6">
+						<button class="btn btn-primary" ng-click="testScript()"> <i class="glyphicon glyphicon-play "></i> Test
+						script</button>
+						
+						<button class="btn btn-success" ng-click="saveScript()"><i class="glyphicon glyphicon-save-file "></i>  Save Script</button>
+	<p/>
+		<div role="tabpanel">
+
+			<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+				<li role="presentation" class="active"><a href="#script"
+					aria-controls="script" role="tab" data-toggle="tab">Script</a></li>
+				<li role="presentation"><a href="#help" aria-controls="help"
+					role="tab" data-toggle="tab">Help</a></li>
+			</ul>
+
+			<!-- Tab panes -->
+			<div class="tab-content">
+				<div role="tabpanel" class="tab-pane active" id="script">
+
+					<h4>Output script:</h4>
+					<pre ng-app>{{outScript}}
+					</pre>
+
+				</div>
+				<div role="tabpanel" class="tab-pane" id="help">
+					<h4>Help</h4>
+					
+
+<p>Template is based javascript language in nashorn (java).<br />
+Principal variables injected in script:</p>
+
+<ul>
+	<li>​atlasAcls - string containing json encoded with acl defined in atlas application</li>
+	<li>marathonApps - string containing json encoded with marathon applications -http://&lt;marathonUrl&gt;/v2/apps</li>
+	<li>marathonTasks - string contains json encoded with marathon tasks -&nbsp;<span style="line-height: 20.7999992370605px;">http://&lt;marathonUrl&gt;</span><span style="line-height: 20.7999992370605px;">/v2/tasks</span></li>
+	<li><span style="line-height: 20.7999992370605px;">config -&nbsp;</span>object responsible for writing the configuration, it offers the println method (print new line), and print method, to write the file to be used as template.</li>
+</ul>
+
+<p>Use all power of javascript with nashorn to create and compose your custom template for haproxy.</p>
+					
+					
+					
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
