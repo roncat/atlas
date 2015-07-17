@@ -11,6 +11,9 @@ import javax.script.ScriptEngineManager;
 import br.com.aexo.atlas.web.rest.RuleResource;
 
 public class RuleRepository {
+	
+	@Inject
+	private AclRepository acls;
 
 	@Inject
 	private AtlasConfiguration config;
@@ -22,7 +25,7 @@ public class RuleRepository {
 			ScriptEngine engine = manager.getEngineByName("nashorn");
 
 			engine.eval(new InputStreamReader(RuleResource.class.getResourceAsStream("/rules.js")));
-			Object resultado = ((Invocable) engine).invokeFunction("processRules", config.getMarathonURL(), this);
+			Object resultado = ((Invocable) engine).invokeFunction("processRules", config.getMarathonURL(), acls);
 			return (List<Rule>) resultado;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
