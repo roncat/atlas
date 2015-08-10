@@ -59,7 +59,6 @@ public class AtlasService {
 		return ruleRepository.getRules();
 	}
 
-	
 	public synchronized void updateNotify() {
 		String script = getTemplate();
 		List<Acl> acls = listAcls();
