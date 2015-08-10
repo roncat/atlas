@@ -58,8 +58,13 @@ function AclController($scope,$http) {
 		
 		$http({
 	      url: 'rest/update-notify',
-	      method: 'POST'
+	      method: 'GET'
 	    }).success(function(data) {
+	    	
+	    	for (var x in data.callbackUrls){
+	    		$http({url:data.callbackUrls[x],method:'POST'});
+	    	}
+	    	
 	    	alert("configuration applied");
 	    }).error(function(err, status) {
 	    	alert("fail to configuration apply");

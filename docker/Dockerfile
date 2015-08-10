@@ -34,7 +34,7 @@ WORKDIR /atlas
 
 RUN curl -O http://download.jboss.org/wildfly/9.0.0.Final/wildfly-9.0.0.Final.zip  && unzip wildfly-9.0.0.Final.zip && rm wildfly-9.0.0.Final.zip
 
-ADD https://github.com/aexoti/atlas/releases/download/atlas-0.29.6/atlas-0.29.6.war /atlas/wildfly-9.0.0.Final/standalone/deployments/atlas.war 
+ADD https://github.com/aexoti/atlas/releases/download/atlas-0.29.7/atlas-0.29.7.war /atlas/wildfly-9.0.0.Final/standalone/deployments/atlas.war 
 
 ADD start.sh /atlas/start.sh
 ADD reload /atlas/reload
