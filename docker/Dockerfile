@@ -3,7 +3,7 @@ FROM haproxy:1.5.12
 MAINTAINER AEXO TI - <carlos.alberto@aexo.com.br>
 
 
-RUN apt-get update && apt-get -y upgrade && apt-get install -y unzip curl
+RUN apt-get update && apt-get -y upgrade && apt-get install -y curl unzip
 
 RUN \
     echo "===> add webupd8 repository..."  && \

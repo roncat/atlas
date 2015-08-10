@@ -38,7 +38,7 @@ public class UpdateNotifierResource {
 	@GET
 	public Response getServers() {
 		try {
-			Response.ok(
+			return Response.ok(
 					Request.Get(config.getMarathonURL() //
 					.concat("/v2/eventSubscriptions")) //
 					.version(HttpVersion.HTTP_1_1) //

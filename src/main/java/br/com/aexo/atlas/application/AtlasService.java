@@ -59,12 +59,19 @@ public class AtlasService {
 		return ruleRepository.getRules();
 	}
 
-	public void updateNotify() {
+	
+	public synchronized void updateNotify() {
 		String script = getTemplate();
 		List<Acl> acls = listAcls();
 		balancer.writeConfiguration(script, acls);
 		balancer.reload();
+		try {
+			Thread.sleep(300);
+		} catch (InterruptedException e) {
+		}
 	}
+	
+	
 
 	public String testScript(String script) {
 		List<Acl> acls = listAcls();
